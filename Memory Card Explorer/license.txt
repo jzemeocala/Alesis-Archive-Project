@@ -1,0 +1,95 @@
+===========================
+SOFTWARE LICENSE AGREEMENT
+===========================
+
+Copyright (C) 1995-1999 Elan Digital Systems Ltd
+All Rights Reserved
+
+You should carefully read the following terms and conditions
+before using this software (Memory Card Explorer, DLLs or Memory 
+Card Explorer Customisation Kit).
+
+Your use of this software indicates your acceptance of Elan's 
+license agreement and warranty.
+
+Disclaimer of Warranty
+
+THIS SOFTWARE AND THE ACCOMPANYING FILES ARE SOLD "AS IS" AND
+WITHOUT WARRANTIES AS TO PERFORMANCE OR MERCHANTABILITY OR ANY
+OTHER WARRANTIES WHETHER EXPRESSED OR IMPLIED.
+Because of the various hardware and software environments into which
+this software may be installed, NO WARRANTY OF FITNESS FOR A 
+PARTICULAR PURPOSE IS OFFERED.
+
+Good data processing procedure dictates that any program be
+thoroughly tested with non-critical data before relying on it.
+The user must assume the entire risk of using the program.  ANY
+LIABILITY OF THE SELLER WILL BE LIMITED EXCLUSIVELY TO PRODUCT
+REPLACEMENT OR REFUND OF PURCHASE PRICE.
+
+Useage
+
+This software license grants the end-user the right to use a single
+copy of Memory Card Explorer per PC installation. Network installations 
+require a separate license according to the number of active users needing 
+access. If at any time, more copies of Memory Card Explorer are running 
+than the number of licenses granted for the end-user's installation(s), 
+this shall constitue an offence.
+
+This software must not be reverse engineered or in any way altered or
+modified except where noted in the Customisation Kit.  
+It cannot be resold without the prior written consent of Elan with
+appropriate licensing provisions.
+It must not be copied to third parties outside of the end-user's 
+organisation.
+It must not be offered on any public network e.g. the Internet.
+
+Please refer to MCEFULLA.DOC (or MCEFULLA.pdf) for Memory Card Explorer
+licence agreement details.
+
+Optional Licensing Arrangements
+
+Optionally the pre-compiled device drivers and DLLs may be supplied under
+separate license to be embedded into the end-users own 
+software upon prior written agreement with Elan and after payment 
+of an appropriate licence fee, the structure and level of which 
+must be obtained from Elan and agreed in writing.
+
+Please refer to MCELA.DOC (or MCELA.pdf) for Memory Card Explorer DLL
+license agreement details.
+
+Please refer to MCEKITLA.DOC (or MCEKITLA.pdf) for Memory Card Explorer
+Customisation Kit license agreement details.
+
+Viruses
+
+Elan has taken reasonable steps to ensure that this software is virus
+free but cannot guarantee this fact due to reliance on 3rd party virus
+detection tools.
+
+Demonstration Use
+
+Memory Card Explorer Demo software and its DLL engine are available
+for demonstration use without charge, under the above licensing terms, 
+for a strictly limited period of 30 days from date of customer 
+installation. Any attempt to extend this period shall constitute an
+offence.
+
+Governing Law
+
+This agreement shall be governed by the laws of the United Kingdom.
+
+
+Elan Digital Systems Ltd
+Elan House
+Little Park Farm Road
+Segensworth West
+Fareham
+Hampshire
+PO15 5SJ
+United Kingdom
+
+Tel 	(+44) (0)1489 579799
+Fax 	(+44) (0)1489 577516
+email	support@elandigitalsystems.co.uk
+web	www.pccard.co.uk

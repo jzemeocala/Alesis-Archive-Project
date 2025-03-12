@@ -35,7 +35,7 @@ instrument via a computer (Including live editing of: Programs, Mixes, Effects, 
 
 
 .... Even now, with multiple programs archived/patched/cracked; I still have bareley wrapped my mind aroung
-10% of what these things can do.
+10% of what these SYNTHS can do.
 
  
 Those that were preserved were mostly distributed as "Shareware" or "Demos" or "Trials" (as was common back in the 32-bit era)

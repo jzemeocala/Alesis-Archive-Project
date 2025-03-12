@@ -1,0 +1,163 @@
+By special arrangement, the SongCanvas is distributed with a copy
+of FM Software's Play/D program - a background MIDI file player which
+allows you to audition songs while changing GS setups.  Play/D is
+part of a comprehensive set of MIDI utilities called MidiTools, which
+is described below.  If you would like to obtain your own copy of the 
+complete MidiTools package, please fill out and return the order form
+at the end of this document directly to FM Software.  If you have also
+registered the SongCanvas, you are entitled to a 25% discount off 
+MidiTools' regular price of $60. 
+
+
+********************************
+ MidiTools Version 2.0 Overview
+********************************
+
+MidiTools is a set of MIDI utility programs for users of MS-DOS computers,
+specially selected to complement the functions of the many fine sequencing 
+and scoring packages on the market.  In particular, MidiTools can provide 
+additional diagnostic, setup, and performance capabilities which may not be
+available or are less convenient to use in more general software.  Support 
+for a variety of MIDI interfaces, a simple user interface (with mouse 
+functions and full help), and some new twists, combine to make MidiTools 
+a useful addition for any MIDI musician. 
+
+The major components of the package, along with some of their features,
+are listed below:
+
+Play  --  MIDI File Player
+--------------------------
+* Plays any standard MIDI format file containing up to 64 tracks.
+* Individual channel playback control of volume, transpose, and redirection. 
+* Real-time and meter-based time displays.
+* Note utilization summary.
+* Automatic MIDI initialization sequences.
+* Play lists for continuous operation.
+* Fast file loading for performance use.
+* Easy creation of play lists from file display.
+* Familiar playback controls: Play/Pause, Rew, FF, Skip. 
+* Mouse sliders for song position and real-time master volume control.
+* Saving of playback setup and textual info.
+* Re-recording of playback parameters changed in real time. 
+* External MIDI sync.
+* Full, on-screen documentation available at any time.
+* Batch display of summary information.
+* Simple command line play available for quick file auditioning.
+* Reads Creative Music format files.
+
+Play/R  --  Memory-resident MIDI File Player
+--------------------------------------------
+* Memory resident, with pop-up window.
+* Same playback capabilities as Play, but with less interactive control 
+  and up to 16 tracks.
+* Compatible with Play setup and play list files.
+* Pop-up controls for Play/Pause, Rew, FF, Skip, and Volume.
+* Can be used while running general computer applications, such as
+  wordprocessors, spreadsheets, and possibly other MIDI software.
+* Requires approximately 64K RAM plus MIDI file size.
+* Can use EMS memory for MIDI file storage.
+* External programming interface for control by other applications.
+
+Record  --  Simple MIDI File Recorder
+-------------------------------------
+* Simple 1-track MIDI file recording.
+* Command line or interactive.
+* Useful for quick testing and working with bulk dumps.
+
+Watch  --  Multi-Function MIDI Analyzer
+---------------------------------------
+* Displays incoming MIDI data translated into readable codes.
+* Review buffer shows MIDI data with full descriptions, including system 
+  exclusive vendor names.
+* Buffer holds 16,000 time-stamped MIDI events (including up to 160,000 
+  bytes of system exclusive data).
+* Buffer can be written to either standard MIDI or binary (MIDIEX) files.
+* Decimal or hexadecimal numeric display.
+* Ten assignable send keys for sending short MIDI data strings, or standard 
+  MIDI and binary files.
+* Patch bay facility includes:  channel redirection, volume control, 
+  transpose, note range limiting, and other message filtering.
+* Adjustable data transfer rate and delays for sysex messages.
+
+Decode  --  MIDI File Decoder
+-----------------------------
+* Lists MIDI file as readable ASCII text.
+* Output may be edited and converted back to standard MIDI using Encode.
+* Time stamped events with tracks interleaved chronologically.
+* Full or abbreviated output.
+
+Encode  --  MIDI File Encoder
+-----------------------------
+* Produces standard MIDI file from Decode output file.
+* Allows insertion/deletion of time intervals.
+
+MIDI file filters
+-----------------
+* Four sophisticated MIDI file processors provide numerous options
+  for filtering and modifying existing MIDI files.
+
+------------------------------------------------------------------------
+
+MidiTools Requirements:  IBM PC-compatible with up to 300K RAM available.
+Hard disk recommended.  MIDI interfaces: Roland MPU-401 or compatibles, 
+IBM PC Music Feature, Key MIDIator, or Creative Labs SOUND BLASTER with 
+MIDI adapter box.
+
+
+
+       ====================================================================
+
+       FM Software                                     MidiTools Order Form
+
+
+       Shipping information:
+
+           Your Name:          ___________________________________________
+
+           Mailing Address:    ___________________________________________
+
+                               ___________________________________________
+
+                               ___________________________________________
+
+                               ___________________________________________
+
+
+       Vendor and Model of PC:       _____________________________________
+
+       Operating System Version:     _____________________________________
+
+       MIDI Interface:               _____________________________________
+
+       Diskette format (check one):
+
+         ___ 5.25" 360K   ___ 5.25" 1.2M   ___ 3.5"  720K   ___ 3.5"  1.4M
+
+
+       -------------------------------------------------------------------
+
+       MidiTools Version 2.0 with User's Guide                   $60.00
+
+       If you have registered the SongCanvas,  
+       you may deduct $15 (subject to verification).           _________ -
+
+                                                 Subtotal      _________
+
+                            PA Residents add 6% sales tax      _________
+
+                                                    Total      _________
+
+
+       Please mail this form, together with your check or money order
+       (in US funds only) to:
+
+                 FM Software
+                 1413 Spring St.
+                 Bethlehem, PA 18018
+
+       Foreign orders: Please add $6.00 for shipping and handling.
+
+
+
+       ======================================================================
+

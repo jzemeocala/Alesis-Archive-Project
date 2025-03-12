@@ -10,7 +10,7 @@ After finally getting my hands on the QS8.1 SYNTH (30 years too late) I have com
 the related software and SysEX files are virtually extinct... 
 
 Therefore I have spent the past month collecting every single related SysEx file, "Bank/Program/Mix" file, Q-Card Image, and
-Shareware/Demo/Trial Program that still exists (that I could find via archive.org backups)
+Shareware/Demo/Trial Program that still exists (that I could find via archive.org backups of all the old forums) 
 
 
 

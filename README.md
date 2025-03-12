@@ -43,10 +43,24 @@ Alesis QS owners do not have to endure what I have had to.
 
 
 That is the purpose of this REPO.... 
+
+
   -   Archiving Sysex files 
   -   Preserving and Cracking Ancient Shareware
   -   Q-Card Dumps
   -   Documenting my journey
+
+
+
+
+CURRENT CONTENTS:
+ - Q-Cards Z1 - Z9
+ - Expando Banks
+ - Every other SysEx file of major importance
+ - Q-Control (cracked via Ghidra with the help of GPT
+ - ChatGPT CRACKING Conversations
+ - Random forgotten software (old cakewalk versions, soundDiver, FreeLoader, SoundBridge, SimSynth, MCE, Etc...)
+ - Whatever else I can find, figure out, and share.
 
 
 

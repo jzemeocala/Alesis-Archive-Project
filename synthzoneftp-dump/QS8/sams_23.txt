@@ -1,0 +1,609 @@
+This file:  Sams_23.txt
+Contents:  Info about the Unisyn (PC) Alesis QS8 bank "Sams_23.ubk".  
+    23 is this bank's revision number.
+Author:  Samuel G. Streeper    sams@best.com
+    www.best.com/~sams/alesis
+Last Update: 29 June 1998    Originated: 3 July 1997
+Bank has over 80 programs and 9 mixes 
+Sounds may be used, modified, and distributed freely.
+
+
+
+---------------------------------------------------------------------------
+Bank Overview
+---------------------------------------------------------------------------
+This bank contains patches which I created or modified for my tastes and
+playing style.  Most notably this bank has good solo piano patches that I
+find much more playable than the factory patches.  I play with my keyboard 
+sensitivity set to about 75 now in the global menu, and these patches are 
+"tuned" for this kind of velocity response. I usually try to make all the 
+sliders do something interesting and good sounding, so check those out.
+
+You may use and modify these sounds in any way without attribution - make
+them sound better or just different and send them back out with your
+changes, please!
+
+Finally, most of the piano patches here are stereo and there will be 
+phase cancellations if you play them to a mono amp since the left and 
+right channels get summed.  If you play my piano patches monophonically,
+look for the few mono patches or just modify a patch to eliminate the 
+right channel (it sounds tinnier on the piano sample) and pan the left
+channel to centre.
+
+Current favorite pianos: mix #8, programs #70 & #81
+
+For more Quadrasynth resources, visit the Quadrasynth pages:
+    http://midiworld.com/quadrasynth/
+
+
+
+
+---------------------------------------------------------------------------
+Program Information
+---------------------------------------------------------------------------
+
+Programs 0 and 1  -  Pianismo28 and 24
+
+Good mellow solo pianos.  Basically I velocity switch between 
+the quiet samples myself using the tracking generators.  This is similar to
+using the veloPiano sample, but I leave off the hard hammer strike sample
+and tweak the samples at different velocities independently for
+(hopefully) optimal sound and playability.  If you like these, check 
+out #70 and #72.
+
+Mod Wheel:      Brightness.
+Slider A:       Gives longer release.
+Slider B:       Slows filter attack, makes the attack softer/mushier.
+    Note that velocity will quicken the attack back up.
+Slider C:       Increase resonance - changes the tone a bit.
+Slider D:       Gives you some reverb.  I finally figured out
+	how to dial up a mellow reverb, so this is a bit subtle
+	but I like how it sounds.
+
+
+----------------------
+Program 2  -  pA8 -pt1
+
+The quiet half of the PianForte piano from the "Mix" section.  It
+doesn't make much sense to play this patch in program mode as all the loud
+sounds are completely missing.  The PianForte mix sounds great for
+performance work, but it's a bit odd for sequencing as it uses 2 midi
+channels.
+
+Program notes: Uses the tracking generators to do its own velocity
+switching.  Originally I tried to match the tones at the velocity 
+split points and make the overall response close to my "reference" 
+Yamaha grand.  Lately I've been practicing daily on a Boesendorfer
+grand, so between having a reference piano that's closer to the
+Alesis sample and having learned a few things about making the QS
+sound good, I'm pretty happy with the sound of this patch.
+
+
+----------------------
+Program 3  -  pA9 -pt2
+
+The loud half of my PianForte from the "Mix" section.  It
+doesn't make much sense to play this patch in program mode as all the
+quiet sounds are completely missing.  
+
+You can use this patch in program
+mode to calibrate your keyboard sensitivity for the PianoForte mix.
+Adjust your sensitivity so that you get the hard hammer strike sample
+when you feel you are playing "enthusiastically enough."  If this patch
+never makes any sound, you won't get the punchiest high end from 
+PianoForte because you're never transmitting high velocities.
+Key sensitivity of about 75 (in the global edit section) is about
+right for me.
+
+
+----------------------
+Program 4 & 5  -  MonoPianos
+
+A mono piano.  This will sound better through a mono amp than the stereo 
+patches.  Has good velocity switching by using the tracking generators.  
+Pretty much just the left channel of the Pianforte mix panned dead center.  
+Program #22 in this bank is a mono stage piano with more kick but less 
+subtlety than this one.  The first is the left and the second one 
+is the right half of the Alesis Boesendorfer stereo sample.
+
+Mod Wheel:      Brightness
+Slider A:       Amp Decay longer.
+Slider B:       Filter Attack Slower. Note that velocity will quicken the
+    attack back up.
+Slider C:       Chorus, give it a tad to fatten your sound.
+Slider D:       Gives you some reverb.
+
+
+----------------------
+Program 6  -  StagePno03
+
+A good bright stereo piano to cut through a mix.  
+Try this and the FulBrite series for rocking out, and see #22 for 
+something similar in a mono piano.
+
+Mod Wheel:      Brightness
+Slider A:       Amp Decay longer.
+Slider B:       If you can't play louder, play out of tune.
+Slider C:       Chorus, give it a tad to fatten your sound.
+Slider D:       Gives you some reverb.
+
+
+----------------------
+Program 7-9  -  Synthy Bright pianos
+
+----------------------
+
+Program 10  -  Qorgan_A1
+
+An experiment in additive synthesis to produce a wobbly organ.  I'm only
+about half done with this patch but I still find it useful.  This patch
+is very simple really.  I use a series of sine waves to approximate
+a square wave, then I make it beat by detuning the partials and by setting
+most of the LFO's in motion.  Eventually I want to "tune" all the beating,
+make it modulatable, make the partials move around the stereo image, etc.
+If you hold down the sustain pedal, you get a huge beat from the detuning
+and some weird arpegiation from the amplitude pulsing and delays.
+One more thing I've noticed is that this sound cuts through a mix well
+without taking up a lot of sonic space, since the sound doesn't have much
+in the way of overtones.
+
+Mod Wheel:      Brightness
+Slider A:       This is a drawbar that removes lower frequencies.
+Slider B:       Speeds up attack and decay, down for a pad, up for a lead.
+Slider C:       Nothing yet, eventually should modulate beat speeds
+Slider D:       Distortion
+
+
+----------------------
+
+Program 11  -  Qorgan_C1
+
+Almost the same as Qorgan_A1, but the waves are more pure which makes it
+a better pad.
+
+
+----------------------
+
+Program 13,14,15  -  Piano Organs.
+
+Try the drawbars for weird effects.
+
+----------------------
+Programs 16-21 - I have nothing to say about most of these.
+
+----------------------
+Program 22 - MonoStage
+	A mono version of #5, a good jamming piano.  I think I tried to
+make this one as bright as the QS can make this sample
+-----------------------
+Programs 23-27 Bright Pianos
+	Super bright stage pianos.  These mostly just differ with effects
+or controller routings.  Sliders C&D usually invoke the functions 
+that differ between these patches.
+	23 C is delay time, D is delay FX amount
+	24 C is chorus, D is reverb
+	25 C is delay time, D is delay feedback, kind of a favorite
+	26 is the best sounding one, slider C is resonance, D is reverb
+	27 is similar but uses a brighter pitch shifted sample
+-----------------------
+Programs 28-29 Distant pianos.
+	These are pure wet piano reverbs.  I was experimenting to see if
+the best sounding wet reverb would make the prettiest smoothest verb for
+my other pianos.  (It does.  Well duh!)  These aren't the best sounding 
+verbs I found though.
+-----------------------
+Programs 30-34 Effects gone bad.
+	And the controllers may make them worse.  Watch the volume levels on
+these.
+-----------------------
+Program 35 Meloct - Mellow octave piano
+-----------------------
+Program 36-39 BritEnuf series pianos
+These are derived from FulBrite piano (patch #26) but they're slightly
+tamed to make them better for some Joplin rags I'm working on.  They're
+a little bit less punchy for better or for worse and without a few
+artifacts intoduced by trying to make the FulBrites so bright.  #36
+has chorus on slider C while #37 has resonance there, and #38 doesn't
+use the EQ in the FX unit since the high frequency EQ amplifies
+some cumulative noise when you hold a chord.  So #38 is maybe one of
+the "truest" reads on the piano sample in this bank.  I'm not sure
+these patches are significantly different from some of my stage
+pianos; I'm still testing these to see how well they work.
+Later note: These work OK for some songs, but the envelopes feel
+mushy and not very piano-like for other stuff.  I just added #39 
+here, it's probably the best of this series.
+
+----------------------
+Program 40 - Pianismo27
+The forerunner to patch #0, it is mellower with less dynamic range.
+----------------------
+Program 41 - sinus
+This patch is all tuned sine waves.  It grew out of this experiment:
+Move the mod wheel and sliders A & D down, and sliders B & C all the
+way up.  Hit the note C2, then move slider A back up and B down to
+confirm that B is tuned a fifth above A.  But if A is down and you
+pull down B, instead of hearing a higher note, you hear an octave
+lower.  Why?
+
+The reason is that B is tuned to a perfect fifth.  Since the QS
+(and almost all modern keyboards by default) is tuned to an equal
+temperament scale, that means 7 semitones plus a little bit (ie
+just tuning).  Since the perfect fifth is 1.5 times the frequency
+of the low note, the fifth beats 3 sine waves for every 2 of the
+lower note, and your ear picks up the beat when the waves come into
+phase, an octave below the low note.
+
+Slider C is a drawbar an octave above B, slider D feeds the outputs
+to the leslie effect, aftertouch messes with the pitch of the high
+harmonic and feeds the whole mess to distortion, and the mod wheel
+makes the amplitudes of all the sounds pulse out of phase.
+
+----------------------
+Program 42 - Big FX
+Slider C adds about as much chorus as I can stand, and slider D does 
+the same for reverb.
+----------------------
+Programs 43-61 - Every piano sample!
+	I just took a good piano patch and plugged every QS piano sample 
+into it to hear how they all sound.  I did slightly change the filter and 
+envelopes on some of them to make them all sound good.  From this you 
+can hear that all the piano ones are really the same multisample, just 
+pitch shifted or with a different starting point to change the attack sound.  
+
+----------------------
+Programs 62 through 75 - the new Piano series.
+
+I wanted to do a series of variations on Pianoisimo27 (a longtime
+classical favorite), mostly because it was too mellow to cut through a 
+mix, even over other pianos when I loop sections to practice.  I'm really 
+happy how these came out, I think several are even better than Pianoisimo27, 
+and I sure have enjoyed that one (if I must say so myself!)
+
+The names look weird, but there is method to the madness; following the
+name are uppercase letters that identify the sample and thus the character:
+
+	G - grand piano, the straight Boesendorfer sample
+	N - no hammer, the grand sample with the hammer attack clipped
+	D - dark, the grand sample pitch shifted down to lower the harmonics
+	V - velo piano, velocity switches between soft, no hammer, and grand
+
+Following this is a lower case letter, "s" for stereo, "m" for mono
+(usually 1 voice, I generally prefer the left sample), or "r" for the right
+mono channel, which has rather a different timbre.  Most of these pianos
+mix in a resonator effect if you push slider C, that fills out the sound
+a bit and I tried to make it sound like soundboard resonance.  However, a few
+these are followed by a "c"; that means slider C adds a chorus instead
+of resonance.  A few have a trailing "d", that means I add a very
+fast delay effect, which causes some phasing that changes the timbre.
+
+Mod Wheel:      Brightness.
+Slider A:       Gives longer release.
+Slider B:       Slows filter attack, makes the attack softer/mushier.
+    Note that velocity will quicken the attack back up.
+Slider C:       Increase resonance (or chorus) - changes the tone a bit.
+Slider D:       Gives you some reverb.
+
+A few program specific comments:
+
+#62 Piano Ns - This one plays just like Pianisimo27, I like it!  Good for
+classical, not very punchy for dramatic pieces though.
+
+#64 Piano Vs - I can't get the envelopes right for this multisample; an 
+AENV attack of 0 gives a bit of a click on the grand sample and if I slow
+it to 1 it's too mushy on the no hammer sample.  Oh well!  The mono version
+makes a pretty versatile 1 voice piano.
+
+#68 Piano Ds - I gave this one a bigger reverb than the others so you can
+really wallow in the darkness.  The pitch shifting makes the overtones on a
+couple notes slightly out of tune.
+
+#70 Piano NGs - Velo switching done right.  This is a new favorite for
+classical and it's got pretty good kick if you raise the mod wheel.
+
+#72 Piano NGsd - Here's a great trick - This one is always routed through a
+fast delay, adjustable with slider C from 0 to about 8 milliseconds.  These
+delays cause phasing that can really tweak the timbre to bring out the attack,
+or make the tone bright, mellow, or boxy.  Combine this with the mod wheel 
+(filtering before the delay) and slider B (filter the attack or accentuate
+mettalic attack tones) and you can get more colors out of this one than any
+of my other pianos.  I like it!
+
+----------------------
+Programs 76 & 77   FXGrand monophonic pianos
+
+	These were experiments to try and change the timbre of the piano with harder
+velocity strikes.  The effect is not very pronounced, but still they seem to
+play ok.  The first one uses the FX unit to change the phase of 1 of the samples
+so it will sound different in a mix, and both of them mix in pitch shifted samples
+with velocity.  On both slider C affects the tone some and slider D adds more
+pronounced reverb than most of my pianos.
+
+----------------------
+Programs 78 and 79  -  BigBoesy and ClassyBo
+
+These are variations on Pianisimo27 and Pianisimo13, respectively.  Up to
+Pianisimo 11 and 13 or so I was moving away from harsher Alesis piano sounds,
+and around 13 all the way up to 27 I was working for a clearer sound and better
+top end.  But I still play 13 all the time for classical because it's smoooooth,
+so these 2 combine some of the characteristics of each.  The differences are
+pretty subtle but they feel different to ME...  These programs are also used 
+in mixes #8 & 9 where I use a different piano on top for better highs.
+
+Mod Wheel:      Brightness.
+Slider A:       Gives longer release.
+Slider B:       Slows filter attack, makes the attack softer/mushier.
+    Note that velocity will quicken the attack back up.
+Slider C:       Increase resonance on BigBoesy and chorus on ClassyBo
+Slider D:       Gives you some reverb.
+
+----------------------
+Program 80 -  AcidGirl
+
+A nasty sawtooth patch for basslines.  Sliders ABC modulate the envelope
+attack, decay, and release respectively.  The mod wheel determines how the
+envelope pulls up the filter.  Slider D adds some squawky distortion.  
+If you've got the mod wheel up, be careful with your levels on high notes;
+a digital saw wave is loaded with high frequency sizzle and you don't want 
+to damage your ears (or speakers).  Aftertouch detunes the oscillators and 
+adds a bit of a feedback pad.  If I run this patch into my analog synth's 
+external filter input, it makes a great analog brass sound.
+
+----------------------
+Program 81 -  MoodPiano
+
+Slider B shifts the pitch from way flat to way sharp, so this piano gives some
+interesting timbres if you're playing by yourself.  You probably don't want to
+use this one with people playing pitched instruments or they just might pitch
+you.
+----------------------
+Program 82 -  Nocturne
+
+This stereo piano uses the mellow NoHammer sample for the low and mid notes but
+the Grand sample for the high notes.  I use it as a 1 channel piano for classical
+playing on pieces that require more "tinkly" highs than the Pianisimo patches
+provide.  It's sort of a cross between program #0 and mix #8.
+----------------------
+Program 83 -  Tenebres
+
+A dark and mellow piano.  This patch is best in stereo, it has a
+rather strong chorus effect when played in mono.
+----------------------
+Program 84 -  PianoX
+
+An experimental piano.  I use the "2 reverbs" FX configuration on this one 
+which I haven't used on anything else yet.  On harder strikes it sends a 
+sine wave to the bigger reverb.  I'm trying to simulate they way a piano
+timbre changes when you punch it.  Not that this adequately emulates 
+that... I tuned this piano a bit flat to tame some of the high frequencies 
+without too much filtration.  Sliders A & B kill the left and right 
+piano channels, which can remove phase cancellations when you play
+this through a mono amp.  Slider C changes delay time, and slider D 
+boosts the amount of delay in the mix.
+----------------------
+Programs 86-90 Component parts for "Sinead" mix patches.
+
+	86 and 87 are the first 8 harmonices for a sawtooth wave. 88-90
+is a 12 voice version of the same thing.  This allows me to do additive
+synthesis to mimic a resonant filter.  These patches can sound 
+cool when played in program mode, since it will just play 4
+harmonics that are mathematically related but not necessarily
+on half step boundaries.  Move the B slider up to attenuate the even
+harmonics.
+
+----------------------
+Program 100 SamzDrmzA1
+
+	A drum kit.  Right now the only reason this exists is for a better 
+snare drum, centered around the C2 key.  The standard snare drum isn't 
+punchy enough and rolls sounded more like tapping on a bucket.  This is
+my first attempt, at least it hits properly hard and can do proper rolls.
+
+Mod Wheel:      Filter brightness, snare sustain.
+Slider A:       Snare AENV release.
+Slider B:       Snare sustain decay.
+Slider C:       Amount of delays in the reverb, no effect if reverb isn't up.
+Slider D:       Reverb.  I'll have to fix this so the other drums go to verb too.
+
+----------------------
+
+
+
+
+----------------------
+Program 116-123 More obsoleted versions of patches, kept here because
+they still have some goodness.
+
+----------------------
+Program 116 - Piano NGs3
+
+This one is a component in mixes #8 & 9.  It supplies the high
+notes.
+----------------------
+Program 117 & 120  -  A couple of historical favorites...
+I'm adding this comment about a year (!) after I started my quest for the
+best possible QS8 pianos.  Pianismo11 was the first one whose tone I really 
+liked for classical; I finally got the piano really soft and dark.  In 
+retrospect it was too soft with an unrealistic attack (an overreaction to the
+Alesis stage piano patches!)  And Pianisimo13 was the first one where I thought
+the QS was realistically showing some of the beauty and grandeur of the
+Boesendorfer that the sample came from.  I played it until the wee hours of
+the morning, and when I would lay into a big chord I would just mouth out
+"Oh YEAH!" like it was finally clear just how good the QS could be.
+
+----------------------
+Program 124  -  ClsclPian2
+
+A fairly mellow classical piano patch.  This patch is related to the 
+Pianisimo patches but I tried to really tame the attack to make it more 
+suitable for fast classical music.  If the attack is to mushy for your 
+piece or style, try the Pianisimo program or Pianforte mix.  
+
+----------------------
+Program 125  -  Panner01
+
+Just an experiment in panning using controller A.  Dave Bryce gave
+me the secret that made this one work:  Set a voice's velocity response
+curve to "minimum" and then you can modulate the amplitude up with any
+modulator, otherwise it seems you can only modulate it downwards.
+This one is still not right with different velocity triggers but I'm
+not going to fix it for a while.
+
+----------------------
+Program 126  -  wackflut
+
+Not generally useful, but it was an interesting lead voice and sound effect
+on one project.
+
+----------------------
+Program 127  -  SoftPiano4 (obsolete)
+
+An obsolete ancestor of
+most of the pianos in this bank and a descendent of the Alesis PureStereo
+patch.  Development has probably stopped on this patch and it's not my
+favorite here.
+
+
+----------------------
+
+
+
+
+
+
+---------------------------------------------------------------------------
+Mix Information
+---------------------------------------------------------------------------
+
+
+Mix 0  -  PianForte5
+
+An old but versatile piano patch.  I velocity switch between 3 stereo samples,
+and try to optimize the sonic characteristics of each sample
+independently.  Constructed from patches #2 and #3 in the
+program bank.
+
+A few important notes:
+This patch is better suited for performance work than sequencing;  Since
+the sound is constructed from 6 samples, it uses 2 program patches and
+requires 2 midi channels.  These channels need to receive exactly
+the same data, and then based on the velocity, only 1 stereo-pair will
+sound.  If there's a better way to do what I need on 1 channel, I'd love
+to hear about it!  Here's how I use it in sequencing:  Channel 1 transmits
+the normal midi data, but I don't have channel 2 transmit anything.  To
+play it back, you can play this track back to a 1 channel piano like my
+Pianisimo patch, or you can dup the track and send it to channels 1 and
+2 to get the piano to properly sound both loud and soft notes.  You could
+set up this mix so that both channels 1 & 2 transmit, but they will have
+exactly the same data which is inconvenient at best.  If you do transmit
+both channels, you must set the playback of this track to channel "any",
+because if you force the 2 channel track to a single channel you will
+have a problem with flanging and possibly hung notes.
+
+This patch may consume more polyphony than normal.  I believe every note
+you sound will require 6 voices be made available, but then I think that
+since the tracking generators will kill the amplitude on 4 of those
+voices, they should be immediately made available again for
+voice-stealing.  I haven't had a problem with it.
+
+You probably should calibrate your keyboard senitivity to this patch for 
+the best effect.  Try this:  Go to program mode and play program 3 alone;
+that's the hard hammer strike sample, and this patch will be silent when
+you don't punch the keys hard enough to get to the hard hammer strike.
+If you never get to this hard hammer strike sample, your keyboard sensitivity
+is too low (for the range required by this program).  I set mine to around
+75 and then I get to the punchy sample about often enough when I'm playing
+enthusiastically, and otherwise the mellower samples will play.  Once
+calibrated, go back to mix mode to play the full range instrument.
+
+If you like this mix, check out program #72, which is sort of a later
+derivative and it only requires 1 channel.
+
+Mod Wheel:      Brightness.
+Slider A:       Gives longer decay.
+Slider B:       Slows filter attack, makes the attack softer/mushier.
+    Note that velocity will quicken the attack back up.
+Slider C:       Resonance, maybe a bit like soundboard noise.
+Slider D:       Reverb
+
+
+----------------------
+Mix 1  -  pnoprctc
+
+My piano practice mix.
+Just 9 channels of my program 0 (which should always be a soft piano), and 
+channel 10 is a drum track for the metronome. I use D5 (120 velocity) 
+and A0 (80 velocity) for my clicks.
+
+----------------------
+Mix 2  -  PianoPad_1
+
+Piano in space!  My Pianisimo piano over my experimental Qorgan pad.
+
+----------------------
+
+Mix 3  -  PianLeadA1
+
+A split with a rock piano over my Qorgan, effects from the piano patch.
+
+----------------------
+
+Mix 4  -  PianLeadB1
+
+A split with a rock piano over my Qorgan, effects from the Qorgan.  Try 
+the drawbars.
+
+----------------------
+
+Mix 5  -  QorgLeadA1
+
+A split with Qorgan over piano, effects from the Qorgan.  Try the drawbars;
+since this Qorgan patch comes up in pad mode you'll need to push up 
+controller B to get the organ into lead mode.
+
+----------------------
+
+Mix 6 and 7  -  Sinead additive organs
+
+These patches burn a lot of polyphony to generate the series of harmonics 
+for a sawtooth wave.  Sinead2v uses 2 channels and 8 voices, and Sinead3v 
+uses 3 channels and 12 voices per note.  Additive synthesis allows me to 
+simulate a resonant filter because I can emphasize certain harmonics 
+with the mod wheel.
+Note that I don't use the filter at all, so the filter envelope is still 
+available to do cool stuff like filter sweeps.  There's a lot of neat 
+things you can
+do with this kind of synthesis, but it will be a while before I finish these.
+Still these are current favorites - try dialing up some hollow organ sounds
+for whistling high tones.  Also try the component patches in program
+mode for a hollower sound.
+
+Important note for sequencing:  These patches require multiple channels
+to generate all the harmonics.  They will send identical data on 2 or
+3 channels, and you need to play that data back on 2 or 3 channels -
+don't force it back to 1 channel on playback or you won't get the
+right effect.
+
+Mod Wheel:      Simulate filter cutoff point.
+Slider A:       Simulated resonance.  This doesn't work quite right yet.
+Slider B:       Cuts the even harmonics, so the saw wave morphs towards
+	a square wave.
+Slider C:       I think I routed this to the pitch unit, I forget now
+	what it does.
+Slider D:       Reverb
+
+----------------------
+
+Mix 8 and 9  -  BigBoesy and Classic Bo
+
+Similar to programs 78 and 79, majestic classical pianos, but I use a
+different program (using channel 2) for the notes from C#5 on up to
+circumvent the NoHammer samples that have their attack clipped off up
+there.
+
+----------------------
+Mix 10 AcidGirls
+I'm using this to sequence some TB303 like stuff.  It's just a sawtooth
+patch on every channel except 10, which is drums.
+----------------------
+
+

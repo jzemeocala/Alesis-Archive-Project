@@ -1,0 +1,1218 @@
+QS6,7,8,R MIDI SYSEX SPECIFICATION
+
+February 3 1997
+
+SYSTEM EXCLUSIVE FORMAT
+
+	The QS MIDI System Exclusive message format is as follows:
+
+	F0	System exclusive status
+	00 00 0E	Alesis manufacturer id#
+	0E	Quadrasynth family id#
+	cc	Opcode
+ 	dd	Data
+	 :	   :	  
+	 :	   :
+	F7	End-Of-Exclusive
+
+
+OPCODES:
+
+	00  -  MIDI User Program Dump 	F0 00 00 0E 0E 00 <program#> <data> F7
+
+<program#>=  0..127 selects individual user programs
+
+<data> is in a packed format in order to optimize data transfer.  Eight
+MIDI bytes are used to transmit each block of 7 QS data bytes.  If the
+7 data bytes are looked at as one 56-bit word, the format for
+transmission is eight 7-bit words beginning with the most significant
+bit of the first byte, as follows:
+
+	SEVEN QUADRASYNTH BYTES:	
+0: A7 A6 A5 A4 A3 A2 A1 A0
+1: B7 B6 B5 B4 B3 B2 B1 B0
+2: C7 C6 C5 C4 C3 C2 C1 C0
+3: D7 D6 D5 D4 D3 D2 D1 D0
+4: E7 E6 E5 E4 E3 E2 E1 E0
+5: F7 F6 F5 F4 F3 F2 F1 F0
+6: G7 G6 G5 G4 G3 G2 G1 G0
+
+	     TRANSMITTED AS:    	 
+0: 0 A6 A5 A4 A3 A2 A1 A0
+1: 0 B5 B4 B3 B2 B1 B0 A7
+2: 0 C4 C3 C2 C1 C0 B7 B6
+3: 0 D3 D2 D1 D0 C7 C6 C5
+4: 0 E2 E1 E0 D7 D6 D5 D4
+5: 0 F1 F0 E7 E6 E5 E4 E3
+6: 0 G0 F7 F6 F5 F4 F3 F2
+7: 0 G7 G6 G5 G4 G3 G2 G1
+
+	There are 400 data bytes sent for a single program dump, which
+corresponds to 350 bytes of program data.  With the header, the total
+number of bytes transmitted with a program dump is 408.  The location
+of each parameter within a program dump is shown in the next section.
+
+
+	01  -  MIDI User Program Dump Request   F0 00 00 0E 0E 01 <program#> F7
+
+<program#>=  0..127 selects individual user programs
+
+	When received, the QS will respond to this message with a MIDI user
+program dump (00) of the program number selected.
+
+
+	02  -  MIDI Edit Program Dump 	F0 00 00 0E 0E 02 <edit#> <data> F7
+
+<edit#>	=  0=program mode edit; 1-16=Mix program edits 1-16
+
+	<data> is in the same format as described in 00.  Loading a program
+into the QS program edit buffer will not change the current effect edit
+buffer, even if the program s effect number is different than the
+current effect number.
+
+
+	03  -  MIDI Edit Program Dump Request   F0 00 00 0E 0E 03 <edit#> F7
+
+<edit#>	=  0=program mode edit; 1-16=Mix program edits 1-16
+
+	When received, the QS will respond to this message with a MIDI edit
+program dump (02) of the edit program selected.
+
+
+	04  -  MIDI Old User Mix Dump   F0 00 00 0E 0E 04 <mix#> <data> F7
+
+<mix#>	=  0..99 selects individual user mixes; 100=mix edit buffer
+
+	<data> is in the same format as described in 00, but with a different
+number of bytes due to the difference in the mix parameters.  As shown
+later, this command (and the following one) exists to accomodate
+Quadrasynths with software versions below 2.00.  The total number of
+data bytes sent for a single mix dump is 141, which corresponds to 123
+bytes of mix data.  With the header, the total number of bytes
+transmitted with a program dump is 149.  When loading a mix into the
+mix edit buffer, none of the 16 program edit buffers or the effect
+buffer will be changed, even if the new mix buffer contains program
+numbers different than what is currently selected.
+
+
+	05  -  MIDI Old Mix Dump Request  F0 00 00 0E 0E 05 <mix#> F7
+
+<mix#>	=  0..99 selects individual user mixes; 100=mix edit buffer
+
+	When received, the QS will respond to this message with a MIDI Old
+Mix dump (04) of the mix selected.  It is recommended that the New Mix
+Dump Request be used instead (0F), since it adds additional Mix
+parameters into its format.
+
+
+	06  -  MIDI User Effects Dump 	F0 00 00 0E 0E 06 <effect#> <data> F7
+
+<effect#>	=  0..127 selects individual user effects
+
+	<data> is in the same format as described in 00, but with a different
+number of bytes due to the difference in the effects parameters.  The
+total number of data bytes sent for a single effects dump is 75, which
+corresponds to 65 bytes of effects data.  With the header, the total
+number of bytes transmitted with a program dump is 83.  Although a
+Program is stored along with its Effects, they are dealt with
+independently via MIDI.
+
+
+	07  -  MIDI User Effects Dump Request  F0 00 00 0E 0E 07 <effect#> F7
+
+<effect#>	=  0..127 selects individual user effects
+
+	When received, the QS will respond to this message with a MIDI user
+effects dump (06) of the user effect selected.
+
+
+	08  -  MIDI Edit Effects Dump 	F0 00 00 0E 0E 08 <edit#> <data> F7
+
+<edit#>	=  0=program mode effect edit; 1=mix mode effect edit
+
+	<data> is in the same format as described in 06.
+
+
+	09  -  MIDI Edit Effects Dump Request  F0 00 00 0E 0E 09 <edit#> F7
+
+<edit#>	=  0=program mode effect edit; 1=mix mode effect edit
+
+	When received, the QS will respond to this message with a MIDI edit
+effects dump (08) of the edit effect selected.
+
+
+	0A  -  MIDI Global Data Dump 	F0 00 00 0E 0E 0A 00 <data> F7
+
+	<data> is in the same format as described in 00, but with a different
+number of bytes due to the difference in the global parameter size. 
+The total number of data bytes sent for a global data dump is 23, which
+corresponds to 20 bytes of global data.  With the header, the total
+number of bytes transmitted with a program dump is 31.  Note that with
+version prior to 2.00, the last three bytes of the global data will not
+be transmitted, since they did not exist in previous versions.
+
+
+	0B  -  MIDI Global Data Dump Request  F0 00 00 0E 0E 0B F7
+
+	When received, the QS will respond to this message with a MIDI global
+data dump (0A).
+
+
+	0C  -  MIDI All Dump Request	F0 00 00 0E 0E 0C F7
+
+	When received, the QS will respond to this message with a 128 MIDI
+User Program dumps (00), 100 MIDI New User Mix dumps (0E), and 128 User
+Effects dumps (06), and a Global data dump (0A), for a total of 79,478
+MIDI bytes.  A delay of 4.25 milliseconds will be placed between each
+dump, resulting in a total transfer time of about 27 seconds.  When
+receiving a complete dump, the QS does not require any delay between
+dumps.
+
+
+	0D  -  MIDI Mode Select	F0 00 00 0E 0E 0D <mode> F7
+
+<mode>	=  0 = Program mode; 1 = Mix mode
+
+	When received, the QS will change to the mode that was selected.  The
+settings will be retained from the last time that mode was exited.
+
+
+	0E  -  MIDI New User Mix Dump   F0 00 00 0E 0E 0E <mix#> <data> F7
+
+<mix#>	=  0..99 selects individual user mixes; 100=mix edit buffer
+
+	<data> is in the same format as described in 00, but with a different
+number of bytes due to the difference in the mix parameters. This
+command (and the following one) exists only in Quadrasynths with
+software versions 2.00 and above.  The total number of data bytes sent
+for a single mix dump is 158, which corresponds to 138 bytes of mix
+data.  With the header, the total number of bytes transmitted with a
+program dump is 166.  When loading a mix into the mix edit buffer, none
+of the 16 program edit buffers or the effect buffer will be changed,
+even if the new mix buffer contains program numbers different than what
+is currently selected.
+
+
+	0F  -  MIDI New Mix Dump Request  F0 00 00 0E 0E 0F <mix#> F7
+
+<mix#>	=  0..99 selects individual user mixes; 100=mix edit buffer
+
+	When received, the QS will respond to this message with a MIDI New
+Mix dump (0E) of the mix selected.
+
+
+	10  -  MIDI Editing 
+
+	 F0 00 00 0E 0E 10 <0mmfffff><0ssppppp><0ccccddv><0vvvvvvv>F7
+
+<mm>	=	0=Global, 1=Mix, 2=Program, 3=Effects
+<fffff>	=	Function number 0 through 16, depending on mode
+<ss>	=	Sound 1-4 (0-3) when <mm>=2, effect bus 1-4 (0-3) when <mm>=3
+<ppppp>	=	Page 0 through 23, depending on mode and function
+<cccc>	=	Channel 1 through 16 (0-15); Ignored unless in mix mode & <mm>=1 or 2
+<dd>	=	Data entry pot number 1-4 (0-3)
+<vvvvvvvv>= Parameter value, 8 bit 2 s complement
+
+	All parameters to be edited must be sent in this format (12 MIDI
+bytes), regardless of the number of bits required to transmit the value
+of the parameter.  When the QS receives this message, it will edit the
+specified parameter to the new value and display it.  If the function
+and page selected does not exist in the current configuration, the
+command will cause the nearest legal function, page, and parameter to
+be selected, but no edit will occur.  If a Mix edit is sent while in
+program mode, it will be ignored.  If this command is received while in
+compare, it will be ignored.  If a program edit command is received, it
+will place the QS in Edit mode.  If the value received is out of range
+for the parameter selected, the range will be limited to the nearest
+legal value.  The function and page numbers for each parameter are
+shown in the next section.
+
+
+	11  -  Sector Erase Command 		F0 00 00 0E 0E 11 <sector#> F7
+
+<sector#>=  0..63 selects 128K byte sector number to be erased in FLASH PCMCIA card
+
+	The erase command sets all bytes of a sector to FFH.  There can be up
+to 64 sectors of 128K bytes in a FLASH card, which allows for up to 8
+megabytes of FLASH memory.  Additional commands should not be sent
+until receiving an ACK or NACK (described below) from the QS.  As much
+as 10 seconds must be allowed before aborting if no ACK or NACK is
+received.
+
+
+	12-  Sector Write Command 	F0 00 00 0E 0E 12 <sector#> <block#> <data> <sum> F7
+
+<sector#>=  0..63 selects 128K byte sector number to be written in FLASH PCMCIA card
+<block#>=  0..127 selects 1024 byte block of data to be written in FLASH PCMCIA card
+<sum>= 0..127 seven bit checksum of previous 1173 bytes.
+
+<data> is in a packed format in order to optimize data transfer.  Eight
+MIDI bytes are used to transmit each block of 7 FLASH card data bytes. 
+Like with program dumps, if the 7 data bytes are looked at as one
+56-bit word, the format for transmission is eight 7-bit words beginning
+with the most significant bit of the first byte, as follows:
+
+	SEVEN FLASH CARD BYTES:	
+0: A7 A6 A5 A4 A3 A2 A1 A0
+1: B7 B6 B5 B4 B3 B2 B1 B0
+2: C7 C6 C5 C4 C3 C2 C1 C0
+3: D7 D6 D5 D4 D3 D2 D1 D0
+4: E7 E6 E5 E4 E3 E2 E1 E0
+5: F7 F6 F5 F4 F3 F2 F1 F0
+6: G7 G6 G5 G4 G3 G2 G1 G0
+
+	     TRANSMITTED AS:    	 
+0: 0 A6 A5 A4 A3 A2 A1 A0
+1: 0 B5 B4 B3 B2 B1 B0 A7
+2: 0 C4 C3 C2 C1 C0 B7 B6
+3: 0 D3 D2 D1 D0 C7 C6 C5
+4: 0 E2 E1 E0 D7 D6 D5 D4
+5: 0 F1 F0 E7 E6 E5 E4 E3
+6: 0 G0 F7 F6 F5 F4 F3 F2
+7: 0 G7 G6 G5 G4 G3 G2 G1
+
+	There are 1171 data bytes sent for a single block of a FLASH card
+sector, which corresponds to 1024 bytes of FLASH card data.  With the
+header, the total number of bytes transmitted with a program dump is
+1181.  This will take a minimum of 377.92 milliseconds to transmit. 
+Additional commands should not be sent until receiving an ACK or NACK
+(described below) from the QS.  Writes should only be performed on
+sector blocks known to contain all FFH data.  This can be verified by
+reading the block first (with the next command), or sending an erase
+command first.
+
+
+	13-  Sector Request Command 	F0 00 00 0E 0E 13 <sector#> <block#> F7
+
+<sector#>=  0..63 selects 128K byte sector number to be written in FLASH PCMCIA card
+<block#>=  0..127 selects 1024 byte block of data to be written in FLASH PCMCIA card
+
+	This command will cause the QS to respond with an opcode 12H (sector
+write command), with the contents of the sector block that was
+requested.  If there is no card present, the QS will respond with an
+opcode 15H.
+
+
+	14 -  FLASH Command ACK Response 	F0 00 00 0E 0E 14 F7
+
+	This command is ignored if received by the QS.  It is sent out by the
+QS after completing an erase command, or receiving a complete sector
+block write command.
+
+
+	15  -  FLASH Command NACK Response 	F0 00 00 0E 0E 15 <error> F7
+
+<error>=  0..4 as follows:
+	0 = No card present / Not a FLASH card
+	1 = Card write protected
+	2 = Erase failed (FLASH chip timeout error)
+	3 = Checksum didn t match
+	4 = Programming failed (usually because block was not erased first)
+
+	This command is ignored if received by the QS.  It is sent out by the
+QS after receiving an erase command that could not be completed, or
+receiving a complete sector block write command that could not be
+programmed or whose checksum was invalid.  In the case of invalid
+checksum, the sending device is expected to resend the data at least
+once before aborting.
+
+
+NOTES ON FLASH CARDS:
+
+ 	Best case programming time for each megabyte in a FLASH card will be
+7 minutes, 45 seconds, assuming a typical FLASH programming time of 65
+milliseconds per sector block, and a typical erase time of 1.5 seconds
+per sector.  This results in a transfer rate of approximately 43 times
+slower than real time, assuming the samples are at 48KHz.
+
+ 	The burden is placed on the sending device to avoid possible errors
+that can occur if a sector above the total memory of a card is erased
+or written to (due to possible address aliasing).  It is not possible
+for the QS to determine the amount of memory in the card.
+
+ 	The FLASH card must be a 5 volt only card (no 12 volt required for
+programming), must have 64K byte sectors, must have 150 nanosecond or
+better chip enable read access time, and must be compatible with the
+programming commands and Manufacturer s ID codes of an Am29F040
+4-Megabit FLASH memory from AMD.
+
+
+
+DEVICE INQUIRY
+
+The QS responds to the Universal Device Inquiry message < F0 7E 7F 06 01 F7 >
+Upon receiving this message the QS will respond with the following:
+F0 7E 7F 06 02	Universal Device Reply
+00 00 0E	Alesis Manufacturer ID
+0E 00	QS Family ID, LSB first
+0x 00	QS Family Member, LSB first
+xx xx xx xx	Software revision, ASCI (ex. 30 31 30 30  = '0100' = 1.00)
+F7	End-Of-Exclusive
+
+Quadrasynth Device Family ID's
+#define		kQS_QS6		0x0003
+#define		kQS_QS8		0x0004
+#define		kQS_QS7		0x0005
+#define		kQS_QSR		0x0006
+
+
+Example
+
+Send :
+F0 7E 7F 06 01 F7
+QS8 responds:
+$F0 $7E $7F $06 $02	Universal Device Reply
+$00 $00 $0E		Alesis ID
+$0E $00		QS family LSB 1st
+$04 $00		family member LSB 1st
+$ww $xx $yy $zz		software rev.(ASCII)
+$F7		EOX
+
+
+
+PARAMETER FORMAT
+
+The following specific parameter information shows the locations in
+which each parameter resides after unpacking the data from its 7 bit
+MIDI format into the 8 bit format as described in opcode 00, program
+data dump.
+
+
+GLOBAL DATA FORMAT
+
+The Global parameters are comprised of 19 bytes of data.  Unlike the
+Program, Mix, and Effects parameters, the Global parameters are not
+packed into each available bit, so that each parameter occupies its own
+byte.  This results in unused bits for most of the parameter's bytes. 
+These bits must remain at 0.  In addition, the signed parameters are
+kept in 2's complement format, so no offset adjustment is necessary. 
+For direct parameter editing (sysex command 10H), the function, page,
+and data pot number are shown.  The Mode should be set to 0 (=Global),
+and the Sound and Channel parameters are ignored.
+
+#	Parameter name	Func	Page	Pot	LoLim	HiLim	bits	bit address	
+0.	Global spare (deleted parameter)						7	0:6-0:0
+1.	Pitch transpose*	0	0	2	-12	12	8	1:7-1:0
+2.	Pitch fine tune*	0	0	3	-99	99	8	2:7-2:0
+3.	Keyboard scaling	0	1	0	0	99	7	3:6-3:0
+4.	Keyboard curve *(QS6,7,8 only)	0	1	1	0	2	2	4:1-4:0
+5.	Keyboard Transpose	0	1	2	-12	12	8	5:7-5:0
+6.	Keyboard mode *(QS6,7,8 only)	0	1	3	0	17	5	6:4-6:0
+7.	Controller A number	0	2	0	0	120	7	7:6-7:0
+8.	Controller B number	0	2	1	0	120	7	8:6-8:0
+9.	Controller C number	0	2	2	0	120	7	9:6-9:0
+10.	Controller D number	0	2	3	0	120	7	10:6-10:0
+11.	Pedal 1 controller number	0	4	0	0	120	7	11:6-11:0
+12.	Pedal 2 controller number	0	4	2	0	120	7	12:6-12:0
+13.	MIDI program select	0	5	0	0	17	5	13:4-13:0
+14.	Global spare (deleted parameter)						7	14:6-14:0
+15.	Clock  *(QS7,8,R only)	0	--	--	0	1	1	15:0
+16.	Mix Group Channel *(QSR only)	0	6	0	0	16	5	16:4-16:0
+17.	General MIDI	0	0	1	0	1	1	17:0
+18.	A-D controller reset	0	3	1	0	1	1	18:0
+19.	A-D controller mode	0	3	3	0	2	2	19:1-19:0
+
+* These parameters are transmitted, but are ignored when received as part of a Global data dump (opcode 0A).
+
+NEW MIX DATA FORMAT
+
+Mixes contain 138 bytes of packed parameter data.  The first 10 bytes
+are common parameters for all 16 MIDI channels.  The next 16 sets of 8
+bytes contain each of the channel's parameters.  The bit addresses
+shown are from most significant bit to least significant bit for each
+parameter, with the byte number first, followed by a colon (:),
+followed by the bit number.  Each parameter should never exceed the
+limit shown in the table.  For bipolar parameters, the limits shown are
+offset binary, since this is the format that the parameters are stored
+in.  To view the parameters as two's complement numbers, add the value
+shown in the Offset column.  For direct parameter editing (sysex
+command 10H), the function, page, and data pot number are shown.  The
+Mode should be set to 1 (=Mix), the Sound parameter is ignored, and the
+Channel parameter should be set to 0 through 15, for channels 1 through
+16, respectively.  Signed parameters should be sent in 2's complement
+format.
+
+#	Parameter name	Func	Page	Pot	Offset	Limit	bits	bit address	
+0.	Mix effect MIDI program change	5	0	2	0	1	1	0:0
+1.	Mix effect chan	5	0	3	0	15	4	0:4-0:1
+2.	Mix name digit 0	6	0	0	0	95	7	1:3-0:5
+3.	Mix name digit 1	6	1	0	0	95	7	2:2-1:4
+4.	Mix name digit 2	6	2	0	0	95	7	3:1-2:3
+5.	Mix name digit 3	6	3	0	0	95	7	4:0-3:2
+6.	Mix name digit 4	6	4	0	0	95	7	4:7-4:1
+7.	Mix name digit 5	6	5	0	0	95	7	5:6-5:0
+8.	Mix name digit 6	6	6	0	0	95	7	6:5-5:7
+9.	Mix name digit 7	6	7	0	0	95	7	7:4-6:6
+10.	Mix name digit 8	6	8	0	0	95	7	8:3-7:5
+11.	Mix name digit 9	6	9	0	0	95	7	9:2-8:4
+12.	Mix spare						5	9:7-9:3
+13.	Channel 1 program number	0	0	0	0	127	7	10:6-10:0
+14.	Channel 1 program type	0	0	2	0	1	4	11:2-10:7
+15.	Channel 1 enable	0	0	3	0	1	1	11:3
+16.	Channel 1 volume	1	0	0	0	99	7	12:2-11:4
+17.	Channel 1 pan	1	0	1	0	7	3	12:5-12:3
+18.	Channel 1 output	1	0	2	0	3	2	12:7-12:6
+19.	Channel 1 effect level	2	0	0	0	100	7	13:6-13:0
+20.	Channel 1 effect bus	2	0	1	0	4	3	14:1-13:7
+21.	Channel 1 pitch octave	3	0	0	-2	5	3	14:4-14:2
+22.	Channel 1 pitch semitone	3	0	2	-12	25	5	15:1-14:5
+23.	Channel 1 keyboard low note	4	0	0	0	127	7	16:0-15:2
+24.	Channel 1 keyboard high note	4	0	1	0	127	7	16:7-16:1
+25.	Channel 1 midi in on/off	4	1	0	0	1	1	17:0
+26.	Channel 1 midi out on/off	4	1	2	0	1	1	17:1
+27.	Channel 1 keyboard on/off  **	4	1	3	0	1	1	17:2
+28.	Channel 1 wheels on/off	4	2	0	0	1	1	17:3
+29.	Channel 1 Aftertouch on/off	4	2	1	0	1	1	17:4
+30.	Channel 1 Sustain pedal on/off	4	2	2	0	1	1	17:5
+31.	Channel 1 Pedals/controllers on/off	4	2	3	0	1	1	17:6
+32.	Channel 1 Spare						1	17:7
+33-52.      Channel 2 parameters			(see above)			25:7-18:0
+53-72.      Channel 3 parameters			(see above)			33:7-26:0
+73-92.      Channel 4 parameters			(see above)			41:7-34:0
+93-112.    Channel 5 parameters			(see above)			49:7-42:0
+113-132.  Channel 6 parameters			(see above)			57:7-50:0
+133-152.  Channel 7 parameters			(see above)			65:7-58:0
+153-172.  Channel 8 parameters			(see above)			73:7-66:0
+173-192.  Channel 9 parameters			(see above)			81:7-74:0
+193-212.  Channel 10 parameters			(see above)			89:7-82:0
+213-232.  Channel 11 parameters			(see above)			97:7-90:0
+233-252.  Channel 12 parameters			(see above)			105:7-98:0
+253-272.  Channel 13 parameters			(see above)			113:7-106:0
+273-292.  Channel 14 parameters			(see above)			121:7-114:0
+293-312.  Channel 15 parameters			(see above)			129:7-122:0
+240-332.  Channel 16 parameters			(see above)			137:7-130:0
+
+** NOTE: For the QSR, this parameter is MIDI Group on/off.
+
+OLD MIX DATA FORMAT
+
+This format exists for compatibility with Quadrasynths having software
+prior to version 2.00.  It is presented here for reference, and can
+only be used for old mix data dumps or requests (no direct editing). 
+When receiving this data Old Mixes contain 123 bytes of packed
+parameter data.  The first 11 bytes are common parameters for all 16
+MIDI channels.  The next 16 sets of 7 bytes contain each of the
+channel's parameters.  The bit addresses shown are from most
+significant bit to least significant bit for each parameter, with the
+byte number first, followed by a colon (:), followed by the bit number.
+Each parameter should never exceed the limit shown in the table.  For
+bipolar parameters, the limits shown are offset binary, since this is
+the format that the parameters are stored in.  To view the parameters
+as two's complement numbers, add the value shown in the Offset column.
+
+#	Parameter name				Offset	Limit	bits	bit address	
+0.	Mix spare (deleted parameter)						7	0:6-0:0
+1.	Mix spare (deleted parameter)						1	0:7
+2.	Mix spare (deleted parameter)						1	1:0
+3.	Mix effect chan				0	15	4	1:4-1:1
+4.	Mix name digit 0				0	95	7	2:3-1:5
+5.	Mix name digit 1				0	95	7	3:2-2:4
+6.	Mix name digit 2				0	95	7	4:1-3:3
+7.	Mix name digit 3				0	95	7	5:0-4:2
+8.	Mix name digit 4				0	95	7	5:7-5:1
+9.	Mix name digit 5				0	95	7	6:6-6:0
+10.	Mix name digit 6				0	95	7	7:5-6:7
+11.	Mix name digit 7				0	95	7	8:4-7:6
+12.	Mix name digit 8				0	95	7	9:3-8:5
+13.	Mix name digit 9				0	95	7	10:2-9:4
+14.	Mix spare						5	10:7-10:3
+15.	Channel 1 program number				0	127	7	11:6-11:0
+16.	Channel 1 program type				0	1	1	11:7
+17.	Channel 1 enable				0	1	1	12:0
+18.	Channel 1 volume				0	99	7	12:7-12:1
+19.	Channel 1 pan				0	7	3	13:2-13:0
+20.	Channel 1 output				0	3	2	13:4-13:3
+21.	Channel 1 effect level				0	100	7	14:3-13:5
+22.	Channel 1 effect bus				0	4	3	14:6-14:4
+23.	Channel 1 pitch octave				-2	5	3	15:1-14:7
+24.	Channel 1 pitch semitone				-12	25	5	15:6-15:2
+25.	Channel 1 keyboard low note				0	127	7	16:5-15:7
+26.	Channel 1 keyboard high note				0	127	7	17:4-16:6
+27.	Channel 1 midi in				0	1	1	17:5
+28.	Channel 1 midi out				0	1	1	17:6
+29.	Channel 1 keyboard on/off				0	1	1	17:7
+30-44.      Channel 2 parameters			(see above)			24:7-18:0
+45-59.      Channel 3 parameters			(see above)			31:7-25:0
+60-74.      Channel 4 parameters			(see above)			38:7-32:0
+75-89.      Channel 5 parameters			(see above)			45:7-39:0
+90-104.    Channel 6 parameters			(see above)			52:7-46:0
+105-119.  Channel 7 parameters			(see above)			59:7-53:0
+120-134.  Channel 8 parameters			(see above)			66:7-60:0
+135-149.  Channel 9 parameters			(see above)			73:7-67:0
+150-164.  Channel 10 parameters			(see above)			80:7-74:0
+165-179.  Channel 11 parameters			(see above)			87:7-81:0
+180-194.  Channel 12 parameters			(see above)			94:7-88:0
+195-209.  Channel 13 parameters			(see above)			101:7-95:0
+210-224.  Channel 14 parameters			(see above)			108:7-102:0
+225-239.  Channel 15 parameters			(see above)			115:7-107:0
+240-254.  Channel 16 parameters			(see above)			122:7-114:0
+
+
+PROGRAM DATA FORMAT
+
+Programs contain 350 bytes of packed parameter data.  The first 10
+bytes are common parameters for all four sounds.  The next four sets of
+85 bytes contain each of the four sound's parameters.  The least
+significant bit of the first byte of each sound determines if it is a
+keyboard sound or a drum sound.  The parameter definitions of the
+remaining bits of the first byte as well as the remaining 84 bytes of
+the sound are determined by this bit.  Only one keyboard sound and one
+drum sound are shown below.  Each of the four sounds can be either a
+keyboard sound or a drum sound.  The bit addresses must have the
+correct offset added to them in order to address the correct sound
+relative to the beginning of the program.  Sound 1's address begins at
+10, Sound 2 at 95, Sound 3 at 180, and Sound 4 at 265.  The bit
+addresses shown are from most significant bit to least significant bit
+for each parameter, with the byte number first, followed by a colon
+(:), followed by the bit number.  Each parameter should never exceed
+the limit shown in the table.  For bipolar parameters, the limits shown
+are offset binary, since this is the format that the parameters are
+stored in.  To view them as two's complement numbers, add the value
+shown in the Offset column.  For direct parameter editing (sysex
+command 10H), the function, page, and data pot number are shown.  The
+Mode should be set to 2 (=Program), the Sound parameter set to 0
+through 3 for sounds 1 through 4, respectively, and the Channel
+parameter should be set to 0 through 15, for channels 1 through 16,
+respectively, when used in Mix mode.  Signed parameters should be sent
+in 2's complement format.
+
+#	Parameter name	Func	Page	Pot	Offset	Limit	bits	bit address	
+0.	Program spare (deleted parameter)						7	0:6-0:0
+1.	Program spare (deleted parameter)						1	0:7
+2.	Program name digit 0	8*	0	0	0	95	7	1:6-1:0
+3.	Program name digit 1	8*	1	0	0	95	7	2:5-1:7
+4.	Program name digit 2	8*	2	0	0	95	7	3:4-2:6
+5.	Program name digit 3	8*	3	0	0	95	7	4:3-3:5
+6.	Program name digit 4	8*	4	0	0	95	7	5:2-4:4
+7.	Program name digit 5	8*	5	0	0	95	7	6:1-5:3
+8.	Program name digit 6	8*	6	0	0	95	7	7:0-6:2
+9.	Program name digit 7	8*	7	0	0	95	7	7:7-7:1
+10.	Program name digit 8	8*	8	0	0	95	7	8:6-8:0
+11.	Program name digit 9	8*	9	0	0	95	7	9:5-8:7
+12.	ROM Identifier**						2	9:7-9:6
+
+*If the current sound is a drum, this function number for program name must be 7.
+*These 2 bits are used to identify the machine ROM where a program was written.
+possible values:
+	0 = Quadrasynth Plus / S4 Plus
+	1 = QS
+	2 = Reserved for future use
+	3 = Reserved for future use
+
+If a QS receives a program with a ROM Indentifier of 0,  the QS will
+assume the program originated in a Quadrasynth Plus or S4 Plus.  The QS
+will then re-map the ROM addresses for this program to be compatible
+with the QS.
+
+
+Keyboard Sound:
+
+#	Parameter name	Func	Page	Pot	Offset	Limit	bits	bit address	
+0.	Keyboard / drum mode (=0)	16	0	0	0	1	1	0:0
+1.	Sample group	0	0	0	0	47	6	0:6-0:1
+2.	Sample number	0	0	2	0	127	7	1:5-0:7
+3.	Sound volume	1	0	0	0	99	7	2:4-1:6
+4.	Sound pan	1	0	1	0	6	3	2:7-2:5
+5.	Sound output	1	0	2	0	2	2	3:1-3:0
+6.	Sound effect level	2	0	0	0	99	7	4:0-3:2
+7.	Sound effect bus	2	0	1	0	3	2	4:2-4:1
+8.	Sound pitch semitone	3	0	0	-24	49	6	5:0-4:3
+9.	Sound pitch detune	3	0	2	-99	199	8	6:0-5:1
+10.	Sound pitch detune type	3	0	3	0	1	1	6:1
+11.	Sound pitch wheel mod	3	1	0	0	12	4	6:5-6:2
+12.	Sound pitch aftertouch mod	3	1	1	-99	199	8	7:5-6:6
+13.	Sound pitch lfo mod	3	1	2	-99	199	8	8:5-7:6
+14.	Sound pitch env mod	3	1	3	-99	199	8	9:5-8:6
+15.	Sound portamento mode	3	2	0	0	2	2	9:7-9:6
+16.	Sound portamento rate	3	2	2	0	99	7	10:6-10:0
+17.	Sound key mode	3	2	3	0	2	2	11:0-10:7
+18.	Sound filter frequency	4	0	0	0	99	7	11:7-11:1
+19.	Sound filter keyboard track	4	0	1	0	1	1	12:0
+20.	Sound filter velocity mod	4	0	3	-99	199	8	13:0-12:1
+21.	Sound filter pitch wheel mod	4	1	0	-99	199	8	14:0-13:1
+22.	Sound filter aftertouch mod	4	1	1	-99	199	8	15:0-14:1
+23.	Sound filter lfo mod	4	1	2	-99	199	8	16:0-15:1
+24.	Sound filter env mod	4	1	3	-99	199	8	17:0-16:1
+25.	Sound amp velocity curve	5	0	0	0	12	4	17:4-17:1
+26.	Sound amp aftertouch mod	5	0	1	-99	199	8	18:4-17:5
+27.	Sound amp alfo mod	5	0	2	-99	199	8	19:4-18:5
+28.	Sound low note limit	6	0	0	0	127	7	20:3-19:5
+29.	Sound high note limit	6	0	1	0	127	7	21:2-20:4
+30.	Sound overlap	6	0	2	0	99	7	22:1-21:3
+31.	Sound mod 1 source	7	0	0	0	24	5	22:6-22:2
+32.	Sound mod 1 destination	7	0	1	0	31	5	23:3-22:7
+33.	Sound mod 1 amplitude	7	0	2	-99	199	8	24:3-23:4
+34.	Sound mod 1 gate	7	0	3	0	1	1	24:4
+35.	Sound mod 2 source	7	1	0	0	24	5	25:1-24:5
+36.	Sound mod 2 destination	7	1	1	0	31	5	25:6-25:2
+37.	Sound mod 2 amplitude	7	1	2	-99	199	8	26:6-25:7
+38.	Sound mod 2 gate	7	1	3	0	1	1	26:7
+39.	Sound mod 3 source	7	2	0	0	24	5	27:4-27:0
+40.	Sound mod 3 destination	7	2	1	0	31	5	28:1-27:5
+41.	Sound mod 3 amplitude	7	2	2	-99	199	8	29:1-28:2
+42.	Sound mod 3 gate	7	2	3	0	1	1	29:2
+43.	Sound mod 4 source	7	3	0	0	24	5	29:7-29:3
+44.	Sound mod 4 destination	7	3	1	0	31	5	30:4-30:0
+45.	Sound mod 4 amplitude	7	3	2	-99	199	8	31:4-30:5
+46.	Sound mod 4 gate	7	3	3	0	1	1	31:5
+47.	Sound mod 5 source	7	4	0	0	24	5	32:2-31:6
+48.	Sound mod 5 destination	7	4	1	0	31	5	32:7-32:3
+49.	Sound mod 5 amplitude	7	4	2	-99	199	8	33:7-33:0
+50.	Sound mod 5 gate	7	4	3	0	1	1	34:0
+51.	Sound mod 6 source	7	5	0	0	24	5	34:5-34:1
+52.	Sound mod 6 destination	7	5	1	0	31	5	35:2-34:6
+53.	Sound mod 6 amplitude	7	5	2	-99	199	8	36:2-35:3
+54.	Sound mod 6 gate	7	5	3	0	1	1	36:3
+55.	Sound pitch lfo waveform	9	0	0	0	6	3	36:6-36:4
+56.	Sound pitch lfo speed	9	0	1	0	99	7	37:5-36:7
+57.	Sound pitch lfo delay	9	0	2	0	99	7	38:4-37:6
+58.	Sound pitch lfo trigger	9	0	3	0	3	2	38:6-38:5
+59.	Sound pitch lfo level	9	1	0	0	99	7	39:5-38:7
+60.	Sound pitch lfo mod wheel mod	9	1	1	-99	199	8	40:5-39:6
+61.	Sound pitch lfo aftertouch mod	9	1	2	-99	199	8	41:5-40:6
+62.	Sound filter lfo waveform	10	0	0	0	6	3	42:0-41:6
+63.	Sound filter lfo speed	10	0	1	0	99	7	42:7-42:1
+64.	Sound filter lfo delay	10	0	2	0	99	7	43:6-43:0
+65.	Sound filter lfo trigger	10	0	3	0	3	2	44:0-43:7
+66.	Sound filter lfo level	10	1	0	0	99	7	44:7-44:1
+67.	Sound filter lfo mod wheel mod	10	1	1	-99	199	8	45:7-45:0
+68.	Sound filter lfo aftertouch mod	10	1	2	-99	199	8	46:7-46:0
+69.	Sound amp lfo waveform	11	0	0	0	6	3	47:2-47:0
+70.	Sound amp lfo speed	11	0	1	0	99	7	48:1-47:3
+71.	Sound amp lfo delay	11	0	2	0	99	7	49:0-48:2
+72.	Sound amp lfo trigger	11	0	3	0	3	2	49:2-49:1
+73.	Sound amp lfo level	11	1	0	0	99	7	50:1-49:3
+74.	Sound amp lfo mod wheel mod	11	1	1	-99	199	8	51:1-50:2
+75.	Sound amp lfo aftertouch mod	11	1	2	-99	199	8	52:1-51:2
+76.	Sound pitch env attack	12	0	0	0	99	7	53:0-52:2
+77.	Sound pitch env decay	12	0	1	0	100	7	53:7-53:1
+78.	Sound pitch env sustain	12	0	2	0	99	7	54:6-54:0
+79.	Sound pitch env release	12	0	3	0	99	7	55:5-54:7
+80.	Sound pitch env delay	12	1	0	0	99	7	56:4-55:6
+81.	Sound pitch env sustain decay	12	1	1	0	99	7	57:3-56:5
+82.	Sound pitch env trig type	12	1	3	0	3	2	57:5-57:4
+83.	Sound pitch env time track	12	2	0	0	1	1	57:6
+84.	Sound pitch env sustain pedal	12	2	1	0	1	1	57:7
+85.	Sound pitch env level	12	2	2	0	99	7	58:6-58:0
+86.	Sound pitch env velocity mod	12	2	3	-99	199	8	59:6-58:7
+87.	Sound filter env attack	13	0	0	0	99	7	60:5-59:7
+88.	Sound filter env decay	13	0	1	0	99	7	61:4-60:6
+89.	Sound filter env sustain	13	0	2	0	99	7	62:3-61:5
+90.	Sound filter env release	13	0	3	0	99	7	63:2-62:4
+91.	Sound filter env delay	13	1	0	0	100	7	64:1-63:3
+92.	Sound filter env sustain decay	13	1	1	0	99	7	65:0-64:2
+93.	Sound filter env trig type	13	1	3	0	3	2	65:2-65:1
+94.	Sound filter env time track	13	2	0	0	1	1	65:3
+95.	Sound filter env sustain pedal	13	2	1	0	1	1	65:4
+96.	Sound filter env level	13	2	2	0	99	7	66:3-65:5
+97.	Sound filter env velocity mod	13	2	3	-99	199	8	67:3-66:4
+98.	Sound amp env attack	14	0	0	0	99	7	68:2-67:4
+99.	Sound amp env decay	14	0	1	0	99	7	69:1-68:3
+100.	Sound amp env sustain	14	0	2	0	99	7	70:0-69:2
+101.	Sound amp env release	14	0	3	0	99	7	70:7-70:1
+102.	Sound amp env delay	14	1	0	0	100	7	71:6-71:0
+103.	Sound amp env sustain decay	14	1	1	0	99	7	72:5-71:7
+104.	Sound amp env trig type	14	1	3	0	3	2	72:7-72:6
+105.	Sound amp env time track	14	2	0	0	1	1	73:0
+106.	Sound amp env sustain pedal	14	2	1	0	1	1	73:1
+107.	Sound amp env level	14	2	2	0	99	7	74:0-73:2
+108.	Sound tracking input	15	0	0	0	22	5	74:5-74:1
+109.	Sound tracking point 0	15	0	1	0	100	7	75:4-74:6
+110.	Sound tracking point 1	15	0	2	0	100	7	76:3-75:5
+111.	Sound tracking point 2	15	0	3	0	100	7	77:2-76:4
+112.	Sound tracking point 3	15	1	0	0	100	7	78:1-77:3
+113.	Sound tracking point 4	15	1	1	0	100	7	79:0-78:2
+114.	Sound tracking point 5	15	1	2	0	100	7	79:7-79:1
+115.	Sound tracking point 6	15	1	3	0	100	7	80:6-80:0
+116.	Sound tracking point 7	15	2	0	0	100	7	81:5-80:7
+117.	Sound tracking point 8	15	2	1	0	100	7	82:4-81:6
+118.	Sound tracking point 9	15	2	2	0	100	7	83:3-82:5
+119.	Sound tracking point 10	15	2	3	0	100	7	84:2-83:4
+120.	Sound enable	16	0	3	0	1	1	84:3
+121.	Drum number		(cannot edit)	0	9	4	84:7-84:4
+
+Drum Sound:
+
+#	Parameter name	Func	Page	Pot	Offset	Limit	bits	bit address	
+0.	Keyboard / drum mode (=1)	9	0	0	0	1	1	0:0
+1.	Spare				0	0	7	0:7-0:1
+2.	Drum 1 sample group	0	0	0	0	15	4	1:3-1:0
+3.	Drum 1 sample number	0	0	2	0	127	7	2:2-1:4
+4.	Drum 1 volume	1	0	0	0	31	5	2:7-2:3
+5.	Drum 1 pan	1	0	1	0	6	3	3:2-3:0
+6.	Drum 1 output	1	0	2	0	2	2	3:4-3:3
+7.	Drum 1 effect level	2	0	0	0	63	6	4:2-3:5
+8.	Drum 1 effect bus	2	0	1	0	3	2	4:4-4:3
+9.	Drum 1 pitch	3	0	0	-48	97	7	5:3-4:5
+10.	Drum 1 pitch velocity mod	3	0	1	0	7	3	5:6-5:4
+11.	Drum 1 filter velocity mod	4	0	0	0	3	2	6:0-5:7
+12.	Drum 1 velocity curve	5	0	0	0	12	4	6:4-6:1
+13.	Drum 1 note number	6	0	0	0	127	7	7:3-6:5
+14.	Drum 1 amp envelope decay	8	0	0	0	127	7	8:2-7:4
+15.	Drum 1 mute group	8	0	1	0	3	2	8:4-8:3
+16.	Drum 1 note range	6	0	2	0	3	2	8:6-8:5
+17.	Drum 1 spare				0	0	1	8:7
+18-33.      Drum 2 parameters			(see above)			16:7-9:0
+34-49.      Drum 3 parameters			(see above)			24:7-17:0
+50-65.      Drum 4 parameters			(see above)			32:7-25:0
+66-81.      Drum 5 parameters			(see above)			40:7-33:0
+82-97.      Drum 6 parameters			(see above)			48:7-41:0
+98-113.    Drum 7 parameters			(see above)			56:7-49:0
+114-129.  Drum 8 parameters			(see above)			64:7-57:0
+130-145.  Drum 9 parameters			(see above)			72:7-65:0
+146-161.  Drum 10 parameters			(see above)			80:7-73:0
+162.	Sound enable	9	0	3	0	1	1	81:0
+163.	Spare				0	0	6	81:7-81:1
+164.	Drum number	0-6,8	0	3	0	9	4	82:3-82:0
+165.	Spare				0	0	20	84:7-82:4
+
+
+EFFECT DATA FORMAT
+
+Effects contain 64 bytes of packed parameter data.  The first 11 bytes
+are common parameters for all three configurations.  The first 10 exist
+for compatibility with older software, and are always sent as zeroes.
+The bit addresses shown are from most significant bit to least
+significant bit for each parameter, with the byte number first,
+followed by a colon (:), followed by the bit number.  Each parameter
+should never exceed the limit shown in the table.  For bipolar
+parameters, the limits shown are offset binary, since this is the
+format that the parameters are stored in.  To view them as two's
+complement numbers, add the value shown in the Offset column.  For
+direct parameter editing (sysex command 10H), the function, page, send,
+and data pot numbers are shown.  The Mode should be set to 3
+(=Effects), and the Channel parameter is not used.  The Send parameter
+is not used where the Send parameter is shown as "x" below.  Signed
+parameters should be sent in 2's complement format.
+
+#	Parameter name	Send	Func	Page	Pot	Offset	Limit	bits	bit address	
+0.	Effect spare (deleted parameter)x	2	0	0	0	95	7	0:6-0:0
+1.	Effect spare (deleted parameter)x	2	1	0	0	95	7	1:5-0:7
+2.	Effect spare (deleted parameter)x	2	2	0	0	95	7	2:4-1:6
+3.	Effect spare (deleted parameter)x	2	3	0	0	95	7	3:3-2:5
+4.	Effect spare (deleted parameter)x	2	4	0	0	95	7	4:2-3:4
+5.	Effect spare (deleted parameter)x	2	5	0	0	95	7	5:1-4:3
+6.	Effect spare (deleted parameter)x	2	6	0	0	95	7	6:0-5:2
+7.	Effect spare (deleted parameter)x	2	7	0	0	95	7	6:7-6:1
+8.	Effect spare (deleted parameter)x	2	8	0	0	95	7	7:6-7:0
+9.	Effect spare (deleted parameter)x	2	9	0	0	95	7	8:5-7:7
+10.	Effect configuration	x	2	0	0	0	4	4	9:1-8:6
+
+
+
+Configuration 0 (4-sends, 1 reverb):
+
+#	Parameter name	Send	Func	Page	Pot	Offset	Limit	bits	bit address	
+PITCH SEND 1:
+11.	Send 1 pitch type	0	0	0	0	0	5	3	9:4-9:2
+If 11= 0 thru 3 (chorus and flange):
+12.	Send 1 pitch speed	0	0	1	1	0	99	7	10:3-9:5	
+13.	Send 1 pitch shape	0	0	1	0	0	1	1	10:4
+14.	Send 1 pitch depth	0	0	1	2	0	99	7	11:3-10:5
+15.	Send 1 pitch feedback	0	0	1	3	0	99	7	12:2-11:4
+16.	Send 1 pitch mix	0	5	0	0	0	99	7	13:1-12:3
+If 11= 4 (pitch detune):
+12.	Send 1 pitch detune	0	0	1	0	-99	198	8	10:4-9:5
+13.	Spare							0
+14.	Spare							7	11:3-10:5
+15.	Spare							7	12:2-11:4
+16.	Send 1 pitch mix	0	5	0	0	0	99	7	13:1-12:3
+If 11= 5 (resonator):
+12.	Send 1 resonator tuning	0	0	1	0	0	99	7	10:3-9:5
+13.	Spare							1	10:4
+14.	Send 1 resonator decay	0	0	1	2	0	99	7	11:3-10:5
+15.	Spare							7	12:2-11:4
+16.	Send 1 pitch mix	0	5	0	0	0	99	7	13:1-12:3
+
+DELAY SEND 1:
+17.	Send 1 delay type	0	4	0	0	0	2	2	13:3-13:2
+18.	Send 1 delay input	0	4	1	0	-99	198	8	14:3-13:4
+If 17=0 (mono delay):
+19.	Send 1 delay 10ms	0	4	1	1	0	79	7	15:2-14:4
+20.	Send 1 delay 1ms	0	4	1	2	0	9	4	15:6-15:3
+21.	Spare							6	16:4-15:7
+22.	Spare							4	17:0-16:5
+23.	Send 1 delay feedback	0	4	1	3	0	99	7	17:7-17:1
+24.	Spare							7	18:6-18:0
+25.	Send 1 delay mix	0	5	0	1	0	99	7	19:5-18:7
+If 17=1 (stereo delay):
+19.	Send 1 left delay 10ms	0	4	1	1	0	39	7	15:2-14:4
+20.	Send 1 left delay 1ms	0	4	1	2	0	9	4	15:6-15:3
+21.	Send 1 right delay 10ms	0	4	2	1	0	39	6	16:4-15:7
+22.	Send 1 right delay 1ms	0	4	2	2	0	9	4	16:8-16:5
+23.	Send 1 left delay feedback	0	4	1	3	0	99	7	17:7-17:1
+24.	Send 1 right delay feedback	0	4	2	3	0	99	7	18:6-18:0
+25.	Send 1 delay mix	0	5	0	1	0	99	7	19:5-18:7
+If 17=2 (ping-pong delay):
+19.	Send 1 delay 10ms	0	4	1	1	0	39	7	15:2-14:4
+20.	Send 1 delay 1ms	0	4	1	2	0	9	4	15:6-15:3
+21.	Spare							6	16:4-15:7
+22.	Spare							4	17:0-16:5
+23.	Send 1 delay feedback	0	4	1	3	0	99	7	17:7-17:1
+24.	Spare							7	18:6-18:0
+25.	Send 1 delay mix	0	5	0	1	0	99	7	19:5-18:7
+
+
+REVERB SEND 1:
+26.	Reverb type	0	3	1	0	0	6	4	20:1-19:6
+27.	Send 1 reverb input 1	0	3	0	0	0	1	1	20:2
+28.	Send 1 reverb input 2	0	3	0	1	0	2	2	20:4-20:3
+29.	Send 1 reverb balance	0	3	0	2	-99	198	8	21:4-20:5
+30.	Send 1 reverb input level	0	3	0	3	0	99	7	22:3-21:5
+31.	Send 1 reverb prdly 10ms	0	3	1	1	0	29	5	23:0-22:4
+32.	Send 1 reverb prdly 1ms	0	3	1	2	0	9	4	23:4-23:1
+33.	Send 1 reverb inut premix	0	3	1	3	-99	198	8	24:4-23:5
+34.	Send 1 reverb input filter	0	3	2	0	0	99	7	25:3-24:5
+35.	Send 1 reverb decay	0	3	2	1	0	99	7	26:2-25:4
+36.	Send 1 reverb diffusion	0	3	3	2	0	99	7	27:1-26:3
+37.	Send 1 reverb density	0	3	3	0	0	99	7	28:0-27:2
+38.	Send 1 reverb low decay	0	3	2	2	0	99	7	28:7-28:1
+39.	Send 1 reverb high decay	0	3	2	3	0	99	7	29:6-29:0
+40.	Send 1 reverb mix	0	5	0	2	0	99	7	30:5-29:7
+
+PITCH SEND 2:
+41.	Send 2 pitch type	1	0	0	0	0	5	3	31:0-30:6
+If 41= 0 thru 3 (chorus and flange):
+42.	Send 2 pitch speed	1	0	1	1	0	99	7	31:7-31:1	
+43.	Send 2 pitch shape	1	0	1	0	0	1	1	32:0
+44.	Send 2 pitch depth	1	0	1	2	0	99	7	32:7-32:1
+45.	Send 2 pitch feedback	1	0	1	3	0	99	7	33:6-33:0
+46.	Send 2 pitch mix	1	5	0	0	0	99	7	34:5-33:7
+If 41= 4 (pitch detune):
+42.	Send 2 pitch detune	0	0	1	0	-99	198	8	32:0-31:1
+43.	Spare							0
+44.	Spare							7	32:7-32:1
+45.	Spare							7	33:6-33:0
+46.	Send 2 pitch mix	1	5	0	0	0	99	7	34:5-33:7
+If 41= 5 (resonator):
+42.	Send 2 resonator tuning	1	0	1	0	0	60	7	31:7-31:1
+43.	Spare							1	32:0
+44.	Send 2 resonator decay	1	0	1	2	0	99	7	32:7-32:1
+45.	Spare							7	33:6-33:0
+46.	Send 2 pitch mix	1	5	0	0	0	99	7	34:5-33:7
+
+DELAY SEND 2:
+47.	Send 2 delay type	1	4	0	0	0	2	2	34:7-34:6
+48.	Send 2 delay input	1	4	1	0	-99	198	8	35:7-35:0
+If 47=0 (mono delay):
+49.	Send 2 delay 10ms	1	4	1	1	0	79	7	36:6-36:0
+50.	Send 2 delay 1ms	1	4	1	2	0	9	4	37:2-36:7
+51.	Spare							6	38:0-37:3
+52.	Spare							4	38:4-38:1
+53.	Send 2 delay feedback	1	4	1	3	0	99	7	39:3-38:5
+54.	Spare							7	40:2-39:4
+55.	Send 2 delay mix	1	5	0	1	0	99	7	41:1-40:3
+If 47=1 (stereo delay):
+49.	Send 2 left delay 10ms	1	4	1	1	0	39	7	36:6-36:0
+50.	Send 2 left delay 1ms	1	4	1	2	0	9	4	37:2-36:7
+51.	Send 2 right delay 10ms	1	4	2	1	0	39	6	38:0-37:3
+52.	Send 2 right delay 1ms	1	4	2	2	0	9	4	38:4-38:1
+53.	Send 2 left delay feedback	1	4	1	3	0	99	7	39:3-38:5
+54.	Send 2 right delay feedback	1	4	2	3	0	99	7	40:2-39:4
+55.	Send 2 delay mix	1	5	0	1	0	99	7	41:1-40:3
+If 47=2 (ping-pong delay):
+49.	Send 2 delay 10ms	1	4	1	1	0	39	7	36:6-36:0
+50.	Send 2 delay 1ms	1	4	1	2	0	9	4	37:2-36:7
+51.	Spare							6	38:0-37:3
+52.	Spare							4	38:4-38:1
+53.	Send 2 delay feedback	1	4	1	3	0	99	7	39:3-38:5
+54.	Spare							7	40:2-39:4
+55.	Send 2 delay mix	1	5	0	1	0	99	7	41:1-40:3
+56.	unused
+
+REVERB SEND 2:
+57.	Send 2 reverb input 1	1	3	0	0	0	1	1	41:2
+58.	Send 2 reverb input 2	1	3	0	1	0	2	2	41:4-41:3
+59.	Send 2 reverb balance	1	3	0	2	-99	198	8	42:4-41:5
+60.	Send 2 reverb input level	1	3	0	3	0	99	7	43:3-42:5
+
+PITCH SEND 3:
+61.	Send 3 pitch type	2	0	0	0	0	2	2	43:5-43:4
+If 61 = 0 or 1 (chorus and flange):
+62.	Send 3 pitch speed	2	0	1	1	0	99	7	44:4-43:6	
+63.	Send 3 pitch shape	2	0	1	0	0	1	1	44:5
+64.	Send 3 pitch depth	2	0	1	2	0	99	7	45:4-44:6
+65.	Send 3 pitch feedback	2	0	1	3	0	99	7	46:3-45:5
+66.	Send3 pitch mix	2	5	0	0	0	99	7	47:2-46:4
+If 61 = 2 (resonator):
+62.	Send 3 resonator tuning	2	0	1	0	0	99	7	44:4-43:6
+63.	Spare							1	44:5
+64.	Send 3 resonator decay	2	0	1	2	0	99	7	45:4-44:6
+65.	Spare							7	46:3-45:5
+66.	Send 3 pitch mix	2	5	0	0	0	99	7	47:2-46:4
+
+DELAY SEND 3:
+67.	Send 3 delay input	2	4	0	0	-99	198	8	48:2-47:3
+68.	Send 3 delay 10ms	2	4	0	1	0	79	7	49:1-48:3
+69.	Send 3 delay 1ms	2	4	0	2	0	9	4	49:5-49:2
+70.	Send 3 delay feedback	2	4	0	3	0	99	7	50:4-49:6
+71.	Send 3 delay mix	2	5	0	1	0	99	7	51:3-50:5
+
+REVERB SEND 3:
+72.	Send 3 reverb input 1	2	3	0	0	0	1	1	51:4
+73.	Send 3 reverb input 2	2	3	0	1	0	2	2	51:6-51:5
+74.	Send 3 reverb balance	2	3	0	2	-99	198	8	52:6-51:7
+75.	Send 3 reverb input level	2	3	0	3	0	99	7	53:5-52:7
+
+DELAY SEND 4:
+76.	Send 4 delay 10ms	3	4	0	1	0	79	7	54:4-53:6
+77.	Send 4 delay 1ms	3	4	0	2	0	9	4	55:0-54:5
+78.	Send 4 delay feedback	3	4	0	3	0	99	7	55:7-55:1
+79.	Send 4 delay mix	3	5	0	0	0	99	7	56:6-56:0
+
+
+REVERB SEND 4:
+80.	Send 4 reverb balance	3	3	0	0	-99	198	8	57:6-56:7
+81.	Send 4 reverb input level	3	3	0	2	0	99	7	58:5-57:7
+
+MODULATION:
+82.	MIDImod source 1	x	1	0	0	0	10	4	59:1-58:6
+83.	MIDImod destination 1	x	1	0	1	0	36	6	59:7-59:2
+84.	MIDImod level 1	x	1	0	2	-99	198	8	60:7-60:0
+85.	MIDImod source 2	x	1	1	0	0	10	4	61:3-61:0
+86.	MIDImod destination 2	x	1	1	1	0	36	6	62:1-61:4
+87.	MIDImod level 2	x	1	1	2	-99	198	8	63:1-62:2
+88.	Spare								63:7-63:2
+
+Configuration 1 (4-sends, 2 reverb):
+
+#	Parameter name	Send	Func	Page	Pot	Offset	Limit	bits	bit address	
+DELAY SEND 1:
+11.	Send 1 delay 10ms	0	4	0	1	0	119	7	10:0-9:2
+12.	Send 1 delay 1ms	0	4	0	2	0	9	4	10:4-10:1
+13.	Send 1 delay feedback	0	4	0	3	0	99	7	11:3-10:5
+14.	Send 1 delay mix	0	5	0	0	0	99	7	12:2-11:4
+
+PITCH SEND 1:
+15.	Pitch input level	0	0	0	2	0	99	7	13:1-12:3
+16.	Send 1 pitch type	0	0	0	0	0	1	1	13:2
+17.	Send 1 pitch speed	0	0	1	1	0	99	7	14:1-13:3	
+18.	Send 1 pitch shape	0	0	1	0	0	1	1	14:2
+19.	Send 1 pitch depth	0	0	1	2	0	99	7	15:1-14:3
+20.	Send 1 pitch mix	0	5	0	1	0	99	7	16:0-15:2
+
+REVERB SEND 1:
+21.	Reverb type	0	3	1	0	0	6	4	16:4-16:1
+22.	Send 1 reverb input level	0	3	0	0	0	99	7	17:3-16:5
+23.	Send 1 reverb prdly 10ms	0	3	1	1	0	29	5	18:0-17:4
+24.	Send 1 reverb prdly 1ms	0	3	1	2	0	9	4	18:4-18:1
+25.	Send 1 reverb inut premix	0	3	1	3	-99	198	8	19:4-18:5
+26.	Send 1 reverb input filter	0	3	2	0	0	99	7	20:3-19:5
+27.	Send 1 reverb decay	0	3	2	1	0	99	7	21:2-20:4
+28.	Send 1 reverb diffusion	0	3	3	2	0	99	7	22:1-21:3
+29.	Send 1 reverb density	0	3	3	0	0	99	7	23:0-22:2
+30.	Send 1 reverb low decay	0	3	2	2	0	99	7	23:7-23:1
+31.	Send 1 reverb high decay	0	3	2	3	0	99	7	24:6-24:0
+32.	Send 1 reverb mix	0	5	0	2	0	99	7	25:5-24:7
+
+REVERB SEND 2:
+33.	Send 2 reverb input level	1	3	0	0	0	99	7	26:4-25:6
+
+PITCH SEND 3:
+34.	Send 2 pitch speed	2	0	0	1	0	99	7	27:3-26:5	
+35.	Send 2 pitch shape	2	0	0	0	0	1	1	27:4
+36.	Send 2 pitch depth	2	0	0	2	0	99	7	28:3-27:5
+
+
+
+REVERB SEND 3:
+37.	Reverb type	2	3	1	0	0	6	4	28:7-28:4
+38.	Send 3 reverb input level	2	3	0	0	0	99	7	29:6-29:0
+39.	Send 3 reverb prdly 10ms	2	3	1	1	0	29	5	30:3-29:7
+40.	Send 3 reverb prdly 1ms	2	3	1	2	0	9	4	30:7-30:4
+41.	Send 3 reverb inut premix	2	3	1	3	-99	198	8	31:7-31:0
+42.	Send 3 reverb input filter	2	3	2	0	0	99	7	32:6-32:0
+43.	Send 3 reverb decay	2	3	2	1	0	99	7	33:5-32:7
+44.	Send 3 reverb diffusion	2	3	3	2	0	99	7	34:4-33:6
+45.	Send 3 reverb density	2	3	3	0	0	99	7	35:3-34:5
+46.	Send 3 reverb low decay	2	3	2	2	0	99	7	36:2-35:4
+47.	Send 3 reverb high decay	2	3	2	3	0	99	7	37:1-36:3
+48.	Send 3 reverb mix	2	5	0	0	0	99	7	38:0-37:2
+
+REVERB SEND 4:
+49.	Send 4 reverb input level	3	3	0	0	0	99	7	38:7-38:1
+50.	Spare								58:5-39:0
+
+MODULATION:
+51.	MIDImod source 1	x	1	0	0	0	10	4	59:1-58:6
+52.	MIDImod destination 1	x	1	0	1	0	36	6	59:7-59:2
+53.	MIDImod level 1	x	1	0	2	-99	198	8	60:7-60:0
+54.	MIDImod source 2	x	1	1	0	0	10	4	61:3-61:0
+55.	MIDImod destination 2	x	1	1	1	0	36	6	62:1-61:4
+56.	MIDImod level 2	x	1	1	2	-99	198	8	63:1-62:2
+57.	Spare								63:7-63:2
+
+
+Configuration 2 (4-sends, 1 lezlie):
+
+#	Parameter name	Send	Func	Page	Pot	Offset	Limit	bits	bit address	
+PITCH SEND 1:
+11.	Spare							3	9:4-9:2
+12.	Send 1 lezlie speed	0	0	0	1	0	1	7	10:3-9:5	
+13.	Send 1 lezlie motor	0	0	0	0	0	1	1	10:4
+14.	Send 1 lezlie horn	0	0	0	2	0	 6*	7	11:3-10:5
+15.	Spare							7	12:2-11:4
+16.	Send 1 lezlie mix	0	5	0	0	0	99	7	13:1-12:3
+
+DELAY SEND 1:
+17.	Spare							2	13:3-13:2
+18.	Send 1 delay input	0	4	0	0	0	99	8	14:3-13:4
+19.	Send 1 delay 10ms	0	4	0	1	0	79	7	15:2-14:4
+20.	Send 1 delay 1ms	0	4	0	2	0	9	4	15:6-15:3
+21.	Spare							6	16:4-15:7
+22.	Spare							4	17:0-16:5
+23.	Send 1 delay feedback	0	4	0	3	0	99	7	17:7-17:1
+24.	Spare							7	18:6-18:0
+25.	Send 1 delay mix	0	5	0	1	0	99	7	19:5-18:7
+
+Parameters 26 through 88 are identical to configuration 0.
+
+* This parameter is stored as 7 bit 2's complement, with 0 to 6
+representing the positive values, and 127 to 122 representing -1 to -6,
+respectively.
+
+Configuration 3 (2-sends, with EQ):
+
+#	Parameter name	Send	Func	Page	Pot	Offset	Limit	bits	bit address	
+PITCH SEND 1:
+	Parameters 11 through 16 are identical to configuration 0.
+
+DELAY SEND 1:
+	Parameters 17 through 25 are identical to configuration 0.
+
+REVERB SEND 1:
+	Parameters 26 through 40 are identical to configuration 0.
+
+PITCH SEND 2:
+	Parameters 41 through 46 are identical to configuration 0.
+
+DELAY SEND 2:
+	Parameters 47 through 56 are identical to configuration 0.
+
+REVERB SEND 2:
+57.	Send 2 reverb input 1	1	3	0	0	0	1	1	41:2
+58.	Send 2 reverb input 2	1	3	0	1	0	2	2	41:4-41:3
+59.	Send 2 reverb balance	1	3	0	2	-99	198	8	42:4-41:5
+60.	Send 2 reverb input level	1	3	0	3	0	99	7	43:3-42:5
+61.	Spare								43:5-43:4
+
+EQUALIZER:
+61.	Low EQ Frequency	x	6	0	0	0	5	3	44:0-43:6
+62.	Spare								44:5-44:1
+62.	Low EQ Gain	x	6	0	1	0	12	4	45:1-44:6
+62.	Spare								45:4-45:2
+63.	Hi EQ Frequency	x	6	0	2	0	7	3	45:7-45:5
+62.	Spare								46:3-46:0
+64.	Hi EQ Gain	x	6	0	3	0	9	4	46:7-46:4
+65.	Spare								58:5-47:0
+
+MODULATION:
+82.	MIDImod source 1	x	1	0	0	0	10	4	59:1-58:6
+83.	MIDImod destination 1	x	1	0	1	0	36	6	59:7-59:2
+84.	MIDImod level 1	x	1	0	2	-99	198	8	60:7-60:0
+85.	MIDImod source 2	x	1	1	0	0	10	4	61:3-61:0
+86.	MIDImod destination 2	x	1	1	1	0	36	6	62:1-61:4
+87.	MIDImod level 2	x	1	1	2	-99	198	8	63:1-62:2
+88.	Spare								63:7-63:2
+
+
+Configuration 4 (Overdrive, Chorus, Delay, Reverb, Lezlie):
+
+#	Parameter name	Send	Func	Page	Pot	Offset	Limit	bits	bit address	
+PITCH SEND 1:
+11.	Send 1 pitch type	0	0	0	0	0	2	2	9:3-9:2
+12.	Spare							1	9:4
+13.	Send 1 pitch input 2	0	0	0	1	0	3	2	20:4-20:3
+14.	Send 1 pitch input balance	0	0	0	2	-99	198	8	35:7-35:0
+If 11= 0 thru 1 (chorus and flange):
+13.	Send 1 pitch speed	0	0	1	1	0	99	7	10:3-9:5
+14.	Send 1 pitch shape	0	0	1	0	0	1	1	10:4
+15.	Send 1 pitch depth	0	0	1	2	0	99	7	11:3-10:5
+16.	Send 1 pitch feedback	0	0	1	3	0	99	7	12:2-11:4
+17.	Send 1 pitch mix	0	5	0	2	0	99	7	13:1-12:3
+If 11= 2 (resonator):
+13.	Send 1 resonator tuning	0	0	1	0	0	60	6	10:2-9:5
+14.	Spare							2	10:4-10:3
+15.	Send 1 resonator decay	0	0	1	2	0	99	7	11:3-10:5
+16.	Spare							7	12:2-11:4
+17.	Send 1 pitch mix	0	5	0	2	0	99	7	13:1-12:3
+LEZLIE SEND 1:
+18.	Send 1 lezlie input 1	0	0	2	0	0	1	1	41:3	
+19.	Send 1 lezlie input 2	0	0	2	1	0	8	4	40:6-40:3
+20.	Send 1 lezlie input balance	0	0	2	2	-99	198	8	42:4-41:5
+21.	Send 1 lezlie speed	0	0	3	1	0	1	1	38:5	
+22.	Send 1 lezlie motor	0	0	3	0	0	1	1	41:2
+23.	Send 1 lezlie horn	0	0	3	2	0	 6*	7	40:2-39:4
+24.	Send 1 lezlie mix	0	5	1	3	0	99	7	31:7-31:1
+
+DELAY SEND 1:
+25.	Send 1 delay type	0	4	0	0	0	2	2	13:3-13:2
+26.	Send 1 delay input balance	0	4	0	2	-99	198	8	14:3-13:4
+27.	Send 1 delay input 2	0	4	0	1	0	5	3	36:2-36:0
+If 25=0 (mono delay):
+28.	Send 1 delay 10ms	0	4	1	1	0	79	7	15:2-14:4
+29.	Send 1 delay 1ms	0	4	1	2	0	9	4	15:6-15:3
+30.	Spare							6	16:4-15:7
+31.	Spare							4	17:0-16:5
+32.	Send 1 delay feedback	0	4	1	3	0	99	7	17:7-17:1
+33.	Spare							7	18:6-18:0
+34.	Send 1 delay mix	0	5	0	3	0	99	7	19:5-18:7
+If 25=1 (stereo delay):
+28.	Send 1 left delay 10ms	0	4	1	1	0	39	7	15:2-14:4
+29.	Send 1 left delay 1ms	0	4	1	2	0	9	4	15:6-15:3
+30.	Send 1 right delay 10ms	0	4	2	1	0	39	6	16:4-15:7
+31.	Send 1 right delay 1ms	0	4	2	2	0	9	4	16:8-16:5
+32.	Send 1 left delay feedback	0	4	1	3	0	99	7	17:7-17:1
+33.	Send 1 right delay feedback	0	4	2	3	0	99	7	18:6-18:0
+34.	Send 1 delay mix	0	5	0	3	0	99	7	19:5-18:7
+If 25=2 (ping-pong delay):
+28.	Send 1 delay 10ms	0	4	1	1	0	39	7	15:2-14:4
+29.	Send 1 delay 1ms	0	4	1	2	0	9	4	15:6-15:3
+30.	Spare							6	16:4-15:7
+31.	Spare							4	17:0-16:5
+32.	Send 1 delay feedback	0	4	1	3	0	99	7	17:7-17:1
+33.	Spare							7	18:6-18:0
+34.	Send 1 delay mix	0	5	0	3	0	99	7	19:5-18:7
+
+REVERB SEND 1:
+35.	Reverb type	0	3	1	0	0	6	4	20:1-19:6
+36.	Send 1 reverb input 1	0	3	0	0	0	1	1	20:2
+37.	Send 1 reverb input 2	0	3	0	1	0	5	3	31:0-30:6
+38.	Send 1 reverb balance	0	3	0	2	-99	198	8	21:4-20:5
+39.	Send 1 reverb input level	0	3	0	3	0	99	7	22:3-21:5
+40.	Send 1 reverb prdly 10ms	0	3	1	1	0	29	5	23:0-22:4
+41.	Send 1 reverb prdly 1ms	0	3	1	2	0	9	4	23:4-23:1
+42.	Send 1 reverb inut premix	0	3	1	3	-99	198	8	24:4-23:5
+43.	Send 1 reverb input filter	0	3	2	0	0	99	7	25:3-24:5
+44.	Send 1 reverb decay	0	3	2	1	0	99	7	26:2-25:4
+45.	Send 1 reverb diffusion	0	3	3	2	0	99	7	27:1-26:3
+46.	Send 1 reverb density	0	3	3	0	0	99	7	28:0-27:2
+47.	Send 1 reverb low decay	0	3	2	2	0	99	7	28:7-28:1
+48.	Send 1 reverb high decay	0	3	2	3	0	99	7	29:6-29:0
+49.	Send 1 reverb mix	0	5	1	0	0	99	7	30:5-29:7
+
+OVERDRIVE SEND 1:
+50.	Send 1 overdrive type	0	6	0	0	0	1	1	44:5
+52.	Send 1 overdrive balance	0	6	1	2	-99	198	8	48:2-47:3
+63.	Send 1 overdrive treshold	0	6	0	2	0	99	7	50:4-49:6
+64.	Send 1 overdrive brightness	0	6	1	0	0	99	7	49:1-48:3
+65.	Send 1 overdrive mix	0	6	0	0	0	99	7 	31:7-31:1
+
+EQUALIZER:
+61.	Low EQ Frequency	x	6	0	0	0	5	3	44:0-43:6
+62.	Low EQ Gain	x	6	0	1	0	12	4	45:1-44:6
+63.	Hi EQ Frequency	x	6	0	2	0	7	3	45:7-45:5
+64.	Hi EQ Gain	x	6	0	3	0	9	4	46:7-46:4
+
+MODULATION:
+82.	MIDImod source 1	x	1	0	0	0	10	4	59:1-58:6
+83.	MIDImod destination 1	x	1	0	1	0	22	6	59:7-59:2
+84.	MIDImod level 1	x	1	0	2	-99	198	8	60:7-60:0
+85.	MIDImod source 2	x	1	1	0	0	10	4	61:3-61:0
+86.	MIDImod destination 2	x	1	1	1	0	22	6	62:1-61:4
+87.	MIDImod level 2	x	1	1	2	-99	198	8	63:1-62:2
+88.	Spare								63:7-63:2
+
+* This parameter is stored as 7 bit 2's complement, with 0 to 6
+representing the positive values, and 127 to 122 representing -1 to -6,
+respectively.

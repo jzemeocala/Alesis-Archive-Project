@@ -32,6 +32,8 @@ Many were made... Few still exist... Even fewer have creators that you can still
 
 Each one had a different layout and slightly different capabilities but for the most part they all allowed for true LIVE control of the 
 instrument via a computer (Including live editing of: Programs, Mixes, Effects, Params, etc...)
+
+
 .... Even now, with multiple programs archived/patched/cracked; I still have bareley wrapped my mind aroung
 10% of what these things can do.
 
